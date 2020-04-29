@@ -38,10 +38,11 @@
 # - oci.identity.IdentityClient
 #
 # APIs Used:
-# - IdentityClient.list_compartments - Policy COMPARTMENT_INSPECT
-# - IdentityClient.get_tenancy       - Policy TENANCY_INSPECT
-# - ObjectStorageClient.list_objects - Policy OBJECT_INSPECT
-# - ObjectStorageClient.get_object   - Policy OBJECT_READ
+# - IdentityClient.list_compartments          - Policy COMPARTMENT_INSPECT
+# - IdentityClient.get_tenancy                - Policy TENANCY_INSPECT
+# - IdentityClient.list_region_subscriptions  - Policy TENANCY_INSPECT
+# - ObjectStorageClient.list_objects          - Policy OBJECT_INSPECT
+# - ObjectStorageClient.get_object            - Policy OBJECT_READ
 #
 ##########################################################################
 # Tables used - OCI_USAGE, OCI_USAGE_TAGS, OCI_COST, OCI_COST_TAGS
@@ -55,7 +56,7 @@ import os
 import csv
 import cx_Oracle
 
-version = "20.4.27"
+version = "20.05.04"
 usage_report_namespace = "bling"
 work_report_dir = os.curdir + "/work_report_dir"
 
@@ -761,11 +762,25 @@ def main_process():
             identity.base_client.session.proxies = {'https': cmd.proxy}
 
         tenancy = identity.get_tenancy(config["tenancy"]).data
+        tenancy_home_region = ""
+
+        # find home region full name
+        subscribed_regions = identity.list_region_subscriptions(tenancy.id).data
+        for reg in subscribed_regions:
+            if reg.is_home_region:
+                tenancy_home_region = str(reg.region_name)
+
         print("   Tenant Name : " + str(tenancy.name))
         print("   Tenant Id   : " + tenancy.id)
         print("   App Version : " + version)
+        print("   Home Region : " + tenancy_home_region)
         print("")
 
+        # set signer home region
+        signer.region = tenancy_home_region
+        config['region'] = tenancy_home_region
+
+        # Extract compartments
         compartments = identity_read_compartments(identity, tenancy)
 
     except Exception as e:

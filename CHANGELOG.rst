@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <http://keepachangelog.com/>`_.
 
 =====================
+20.05.04 - 2020-05-04
+=====================
+* Added connectivity to the home region where blink bucket exist
+
+=====================
 20.04.27 - 2020-04-27
 =====================
 * Added limit, prefix and start to the list_object call
