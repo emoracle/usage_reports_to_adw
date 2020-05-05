@@ -824,7 +824,7 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
             sql += "TAGS_DATA "
             sql += ") VALUES ("
             sql += ":1, :2, to_date(:3,'YYYY-MM-DD HH24:MI'), to_date(:4,'YYYY-MM-DD HH24:MI'), :5,  "
-            sql += "null, :7, :8, :9, :10, "
+            sql += ":6, :7, :8, :9, :10, "
             sql += ":11, to_number(:12), to_number(:13) ,:14, :15, "
             sql += ":16, to_number(:17), to_number(:18), to_number(:19), to_number(:20), "
             sql += ":21, :22, :23, :24, :25"

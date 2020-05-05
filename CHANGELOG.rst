@@ -10,7 +10,6 @@ The format is based on `Keep a Changelog <http://keepachangelog.com/>`_.
 * Added performance improvements to Cost by adding index OCI_COST_1IX and reference table OCI_COST_REFERENCE
 * Added Graph Report Selector to the Cost pages
 * Added accumulative Chart to Cost
-* Remove loading compartmentid from the cost reports to reduce space of OCI_COST
 
 =====================
 20.05.04 - 2020-05-04
