@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   13:43 Monday May 4, 2020
+--   Date and Time:   14:01 Wednesday May 6, 2020
 --   Exported By:     ADI.ZOHAR@ORACLE.COM
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -36,9 +36,9 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 --       Items:                   67
 --       Computations:            13
 --       Processes:                4
---       Regions:                 46
+--       Regions:                 49
 --       Buttons:                  5
---       Dynamic Actions:         20
+--       Dynamic Actions:         23
 --     Shared Components:
 --       Logic:
 --         App Settings:           1
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200504115849'
+,p_last_upd_yyyymmddhh24miss=>'20200506135852'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -14896,7 +14896,7 @@ wwv_flow_api.create_page(
 '#P5_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 14px;}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200504115849'
+,p_last_upd_yyyymmddhh24miss=>'20200506135852'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(22846551592241693)
@@ -14942,7 +14942,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Monthly Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>40
+,p_display_sequence=>70
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -15259,7 +15259,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Daily Cost Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>50
+,p_display_sequence=>80
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -15883,7 +15883,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Weekly Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>70
+,p_display_sequence=>100
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -16738,7 +16738,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Daily Product Unit Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>60
+,p_display_sequence=>90
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -17299,7 +17299,7 @@ wwv_flow_api.create_report_columns(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(13976669023041443)
-,p_plug_name=>'Total Cost Over Time - &P5_PERIOD.'
+,p_plug_name=>'Cost Over Time - Total - &P5_PERIOD.'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -17360,7 +17360,7 @@ wwv_flow_api.create_jet_chart_series(
 '    (:P5_TAG_DATA is null or tags_data like ''%#'' || nvl(:P5_TAG_KEY,''%'') || ''=%'' || :P5_TAG_DATA || ''#'') and',
 '    (:P5_PERIOD=''Daily'' and to_char(USAGE_INTERVAL_START,''YYYY-MM'') = :P5_PERIOD_RANGE or :P5_PERIOD in (''Monthly'',''Weekly'') and to_char(USAGE_INTERVAL_START,''YYYY'') = :P5_PERIOD_RANGE) and',
 '    not (:P5_COMPARTMENT_NAME is null and :P5_PRODUCT_SERVICE is null and :P5_PRODUCT_REGION is null and :P5_COMPARTMENT_TOP is null and :P5_TAG_KEY is null and :P5_TAG_DATA is null and :P5_COST_PRODUCT_SKU is null) and',
-'    :P5_REPORT_SELECTOR in (''Daily Total Cost Over Time'',''Weekly Total Cost Over Time'',''Monthly Total Cost Over Time'')    ',
+'    :P5_REPORT_SELECTOR in (''Daily Cost Over Time - Total'',''Weekly Cost Over Time - Total'',''Monthly Cost Over Time - Total'')    ',
 '    group by ',
 '    case ',
 '        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
@@ -17380,7 +17380,7 @@ wwv_flow_api.create_jet_chart_series(
 '    tenant_name=:P5_TENANT_NAME and',
 '    (:P5_PERIOD=''Daily'' and to_char(USAGE_INTERVAL_START,''YYYY-MM'') = :P5_PERIOD_RANGE or :P5_PERIOD in (''Monthly'',''Weekly'') and to_char(USAGE_INTERVAL_START,''YYYY'') = :P5_PERIOD_RANGE) and',
 '    (:P5_COMPARTMENT_NAME is null and :P5_PRODUCT_SERVICE is null and :P5_PRODUCT_REGION is null and :P5_COMPARTMENT_TOP is null and :P5_TAG_KEY is null and :P5_TAG_DATA is null and :P5_COST_PRODUCT_SKU is null) and',
-'    :P5_REPORT_SELECTOR in (''Daily Total Cost Over Time'',''Weekly Total Cost Over Time'',''Monthly Total Cost Over Time'')    ',
+'    :P5_REPORT_SELECTOR in (''Daily Cost Over Time - Total'',''Weekly Cost Over Time - Total'',''Monthly Cost Over Time - Total'')    ',
 '    group by ',
 '    case ',
 '        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
@@ -17418,6 +17418,348 @@ wwv_flow_api.create_jet_chart_axis(
 wwv_flow_api.create_jet_chart_axis(
  p_id=>wwv_flow_api.id(13977078966041447)
 ,p_chart_id=>wwv_flow_api.id(13976741456041444)
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_type=>'date-short'
+,p_numeric_pattern=>'DD-MON-YYYY'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15050972044989901)
+,p_plug_name=>'Cost By Service - &P5_PERIOD.'
+,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>wwv_flow_api.id(9765042323688020)
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'BODY'
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_query_num_rows=>15
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_jet_chart(
+ p_id=>wwv_flow_api.id(15051010405989902)
+,p_region_id=>wwv_flow_api.id(15050972044989901)
+,p_chart_type=>'line'
+,p_height=>'500'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'none'
+,p_hover_behavior=>'none'
+,p_stack=>'on'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'end'
+);
+wwv_flow_api.create_jet_chart_series(
+ p_id=>wwv_flow_api.id(15051132224989903)
+,p_chart_id=>wwv_flow_api.id(15051010405989902)
+,p_seq=>10
+,p_name=>'Usage'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'    case ',
+'        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
+'        when :P5_PERIOD=''Weekly'' then to_char(USAGE_INTERVAL_START,''YYYY-WW'') ',
+'        when :P5_PERIOD=''Monthly'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM-MON'')',
+'    end PERIOD,',
+'    nvl(PRD_SERVICE,''-'') PRD_SERVICE,',
+'    sum(COST_MY_COST) as COST_USAGE',
+'from oci_cost',
+'where ',
+'    tenant_name=:P5_TENANT_NAME and',
+'    (:P5_COMPARTMENT_NAME is null or prd_compartment_name = :P5_COMPARTMENT_NAME) and',
+'    (:P5_COMPARTMENT_TOP is null or prd_compartment_path like :P5_COMPARTMENT_TOP ||''%'') and',
+'    (:P5_PRODUCT_SERVICE is null or prd_service = :P5_PRODUCT_SERVICE) and',
+'    (:P5_PRODUCT_REGION is null or prd_region = :P5_PRODUCT_REGION) and',
+'    (:P5_COST_PRODUCT_SKU is null or COST_PRODUCT_SKU = :P5_COST_PRODUCT_SKU) and',
+'    (:P5_TAG_KEY is null or tags_data like ''%#'' || :P5_TAG_KEY || ''=%'') and',
+'    (:P5_TAG_DATA is null or tags_data like ''%#'' || nvl(:P5_TAG_KEY,''%'') || ''=%'' || :P5_TAG_DATA || ''#'') and',
+'    (:P5_PERIOD=''Daily'' and to_char(USAGE_INTERVAL_START,''YYYY-MM'') = :P5_PERIOD_RANGE or :P5_PERIOD in (''Monthly'',''Weekly'') and to_char(USAGE_INTERVAL_START,''YYYY'') = :P5_PERIOD_RANGE) and',
+'    :P5_REPORT_SELECTOR in (''Daily Cost By Service'',''Weekly Cost By Service'',''Monthly Cost By Service'')    ',
+'    group by ',
+'    case ',
+'        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
+'        when :P5_PERIOD=''Weekly'' then to_char(USAGE_INTERVAL_START,''YYYY-WW'') ',
+'        when :P5_PERIOD=''Monthly'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM-MON'')',
+'    end,',
+'    nvl(PRD_SERVICE,''-'') ',
+'order by 1,2'))
+,p_series_name_column_name=>'PRD_SERVICE'
+,p_items_value_column_name=>'COST_USAGE'
+,p_items_label_column_name=>'PERIOD'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'center'
+,p_items_label_font_size=>'10'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(15051263494989904)
+,p_chart_id=>wwv_flow_api.id(15051010405989902)
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>1
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(15051343629989905)
+,p_chart_id=>wwv_flow_api.id(15051010405989902)
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_type=>'date-short'
+,p_numeric_pattern=>'DD-MON-YYYY'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15051727286989909)
+,p_plug_name=>'Cost By Compartment - &P5_PERIOD.'
+,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>wwv_flow_api.id(9765042323688020)
+,p_plug_display_sequence=>50
+,p_plug_display_point=>'BODY'
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_query_num_rows=>15
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_jet_chart(
+ p_id=>wwv_flow_api.id(15051899660989910)
+,p_region_id=>wwv_flow_api.id(15051727286989909)
+,p_chart_type=>'bar'
+,p_height=>'500'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'none'
+,p_hover_behavior=>'none'
+,p_stack=>'on'
+,p_stack_label=>'on'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'end'
+);
+wwv_flow_api.create_jet_chart_series(
+ p_id=>wwv_flow_api.id(15051945799989911)
+,p_chart_id=>wwv_flow_api.id(15051899660989910)
+,p_seq=>10
+,p_name=>'Usage'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'    case ',
+'        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
+'        when :P5_PERIOD=''Weekly'' then to_char(USAGE_INTERVAL_START,''YYYY-WW'') ',
+'        when :P5_PERIOD=''Monthly'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM-MON'')',
+'    end PERIOD,',
+'    nvl(prd_compartment_name,''-'') compartment_name,',
+'    sum(COST_MY_COST) as COST_USAGE',
+'from oci_cost',
+'where ',
+'    tenant_name=:P5_TENANT_NAME and',
+'    (:P5_COMPARTMENT_NAME is null or prd_compartment_name = :P5_COMPARTMENT_NAME) and',
+'    (:P5_COMPARTMENT_TOP is null or prd_compartment_path like :P5_COMPARTMENT_TOP ||''%'') and',
+'    (:P5_PRODUCT_SERVICE is null or prd_service = :P5_PRODUCT_SERVICE) and',
+'    (:P5_PRODUCT_REGION is null or prd_region = :P5_PRODUCT_REGION) and',
+'    (:P5_COST_PRODUCT_SKU is null or COST_PRODUCT_SKU = :P5_COST_PRODUCT_SKU) and',
+'    (:P5_TAG_KEY is null or tags_data like ''%#'' || :P5_TAG_KEY || ''=%'') and',
+'    (:P5_TAG_DATA is null or tags_data like ''%#'' || nvl(:P5_TAG_KEY,''%'') || ''=%'' || :P5_TAG_DATA || ''#'') and',
+'    (:P5_PERIOD=''Daily'' and to_char(USAGE_INTERVAL_START,''YYYY-MM'') = :P5_PERIOD_RANGE or :P5_PERIOD in (''Monthly'',''Weekly'') and to_char(USAGE_INTERVAL_START,''YYYY'') = :P5_PERIOD_RANGE) and',
+'    :P5_REPORT_SELECTOR in (''Daily Cost By Compartment'',''Weekly Cost By Compartment'',''Monthly Cost By Compartment'')    ',
+'    group by ',
+'    case ',
+'        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
+'        when :P5_PERIOD=''Weekly'' then to_char(USAGE_INTERVAL_START,''YYYY-WW'') ',
+'        when :P5_PERIOD=''Monthly'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM-MON'')',
+'    end,',
+'    nvl(prd_compartment_name,''-'') ',
+'order by 1,2'))
+,p_series_name_column_name=>'COMPARTMENT_NAME'
+,p_items_value_column_name=>'COST_USAGE'
+,p_items_label_column_name=>'PERIOD'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'center'
+,p_items_label_font_size=>'10'
+);
+end;
+/
+begin
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(15052096900989912)
+,p_chart_id=>wwv_flow_api.id(15051899660989910)
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>1
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(15052126213989913)
+,p_chart_id=>wwv_flow_api.id(15051899660989910)
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_type=>'date-short'
+,p_numeric_pattern=>'DD-MON-YYYY'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(15052505519989917)
+,p_plug_name=>'Cost By Top Compartment - &P5_PERIOD.'
+,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>wwv_flow_api.id(9765042323688020)
+,p_plug_display_sequence=>60
+,p_plug_display_point=>'BODY'
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_query_num_rows=>15
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_jet_chart(
+ p_id=>wwv_flow_api.id(15052674611989918)
+,p_region_id=>wwv_flow_api.id(15052505519989917)
+,p_chart_type=>'bar'
+,p_height=>'500'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'none'
+,p_hover_behavior=>'none'
+,p_stack=>'on'
+,p_stack_label=>'on'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'end'
+);
+wwv_flow_api.create_jet_chart_series(
+ p_id=>wwv_flow_api.id(15052776181989919)
+,p_chart_id=>wwv_flow_api.id(15052674611989918)
+,p_seq=>10
+,p_name=>'Usage'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'    case ',
+'        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
+'        when :P5_PERIOD=''Weekly'' then to_char(USAGE_INTERVAL_START,''YYYY-WW'') ',
+'        when :P5_PERIOD=''Monthly'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM-MON'')',
+'    end PERIOD,',
+'    nvl(case when prd_compartment_path like ''%/%'' then substr(prd_compartment_path,1,instr(prd_compartment_path,'' /'')-1) else prd_compartment_path end,''-'') as top_compartment,',
+'    sum(COST_MY_COST) as COST_USAGE',
+'from oci_cost',
+'where ',
+'    tenant_name=:P5_TENANT_NAME and',
+'    (:P5_COMPARTMENT_NAME is null or prd_compartment_name = :P5_COMPARTMENT_NAME) and',
+'    (:P5_COMPARTMENT_TOP is null or prd_compartment_path like :P5_COMPARTMENT_TOP ||''%'') and',
+'    (:P5_PRODUCT_SERVICE is null or prd_service = :P5_PRODUCT_SERVICE) and',
+'    (:P5_PRODUCT_REGION is null or prd_region = :P5_PRODUCT_REGION) and',
+'    (:P5_COST_PRODUCT_SKU is null or COST_PRODUCT_SKU = :P5_COST_PRODUCT_SKU) and',
+'    (:P5_TAG_KEY is null or tags_data like ''%#'' || :P5_TAG_KEY || ''=%'') and',
+'    (:P5_TAG_DATA is null or tags_data like ''%#'' || nvl(:P5_TAG_KEY,''%'') || ''=%'' || :P5_TAG_DATA || ''#'') and',
+'    (:P5_PERIOD=''Daily'' and to_char(USAGE_INTERVAL_START,''YYYY-MM'') = :P5_PERIOD_RANGE or :P5_PERIOD in (''Monthly'',''Weekly'') and to_char(USAGE_INTERVAL_START,''YYYY'') = :P5_PERIOD_RANGE) and',
+'    :P5_REPORT_SELECTOR in (''Daily Cost By Top Compartment'',''Weekly Cost By Top Compartment'',''Monthly Cost By Compartment'')    ',
+'    group by ',
+'    case ',
+'        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
+'        when :P5_PERIOD=''Weekly'' then to_char(USAGE_INTERVAL_START,''YYYY-WW'') ',
+'        when :P5_PERIOD=''Monthly'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM-MON'')',
+'    end,',
+'    nvl(case when prd_compartment_path like ''%/%'' then substr(prd_compartment_path,1,instr(prd_compartment_path,'' /'')-1) else prd_compartment_path end,''-'')',
+'order by 1,2'))
+,p_series_name_column_name=>'TOP_COMPARTMENT'
+,p_items_value_column_name=>'COST_USAGE'
+,p_items_label_column_name=>'PERIOD'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'center'
+,p_items_label_font_size=>'10'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(15052897038989920)
+,p_chart_id=>wwv_flow_api.id(15052674611989918)
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>1
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(15052900863989921)
+,p_chart_id=>wwv_flow_api.id(15052674611989918)
 ,p_axis=>'x'
 ,p_is_rendered=>'on'
 ,p_format_type=>'date-short'
@@ -17600,9 +17942,6 @@ wwv_flow_api.create_jet_chart_series(
 ,p_items_label_position=>'center'
 ,p_items_label_font_size=>'10'
 );
-end;
-/
-begin
 wwv_flow_api.create_jet_chart_axis(
  p_id=>wwv_flow_api.id(12036986078075984)
 ,p_chart_id=>wwv_flow_api.id(12036462660075984)
@@ -18081,6 +18420,9 @@ wwv_flow_api.create_page_item(
 ,p_attribute_02=>'VALUE'
 ,p_attribute_04=>'Y'
 );
+end;
+/
+begin
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(12055265653076068)
 ,p_name=>'P5_SUBSCRIPTION'
@@ -18136,7 +18478,13 @@ wwv_flow_api.create_page_item(
 '(',
 '    select ''Daily Cost Over Time'' report_name from dual where :P5_PERIOD=''Daily''',
 '    union all',
-'    select ''Daily Total Cost Over Time'' report_name from dual where :P5_PERIOD=''Daily''',
+'    select ''Daily Cost Over Time - Total'' report_name from dual where :P5_PERIOD=''Daily''',
+'    union all',
+'    select ''Daily Cost By Service'' report_name from dual where :P5_PERIOD=''Daily''',
+'    union all',
+'    select ''Daily Cost By Compartment'' report_name from dual where :P5_PERIOD=''Daily''',
+'    union all',
+'    select ''Daily Cost By Top Compartment'' report_name from dual where :P5_PERIOD=''Daily''',
 '    union all',
 '    select ''Daily Cost Report'' report_name from dual where :P5_PERIOD=''Daily''',
 '    union all',
@@ -18144,13 +18492,25 @@ wwv_flow_api.create_page_item(
 '    union all',
 '    select ''Weekly Cost Over Time'' report_name from dual where :P5_PERIOD=''Weekly''',
 '    union all',
-'    select ''Weekly Total Over Time'' report_name from dual where :P5_PERIOD=''Weekly''',
+'    select ''Weekly Over Time - Total'' report_name from dual where :P5_PERIOD=''Weekly''',
+'    union all',
+'    select ''Weekly Cost By Service'' report_name from dual where :P5_PERIOD=''Weekly''',
+'    union all',
+'    select ''Weekly Cost By Compartment'' report_name from dual where :P5_PERIOD=''Weekly''',
+'    union all',
+'    select ''Weekly Cost By Top Compartment'' report_name from dual where :P5_PERIOD=''Weekly''',
 '    union all',
 '    select ''Weekly Cost Report'' report_name from dual where :P5_PERIOD=''Weekly''',
 '    union all',
 '    select ''Monthly Cost Over Time'' report_name from dual where :P5_PERIOD=''Monthly''',
 '    union all',
-'    select ''Monthly Total Cost Over Time'' report_name from dual where :P5_PERIOD=''Monthly''',
+'    select ''Monthly Cost By Service'' report_name from dual where :P5_PERIOD=''Monthly''',
+'    union all',
+'    select ''Monthly Cost By Compartment'' report_name from dual where :P5_PERIOD=''Monthly''',
+'    union all',
+'    select ''Monthly Cost By Top Compartment'' report_name from dual where :P5_PERIOD=''Monthly''',
+'    union all',
+'    select ''Monthly Cost Over Time - Total'' report_name from dual where :P5_PERIOD=''Monthly''',
 '    union all',
 '    select ''Monthly Cost Report'' report_name from dual where :P5_PERIOD=''Monthly''',
 ')',
@@ -18354,11 +18714,11 @@ wwv_flow_api.create_page_da_action(
 );
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13977250360041449)
-,p_name=>'ShowTotalCostOverTime'
+,p_name=>'ShowCostOverTimeTotal'
 ,p_event_sequence=>70
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'IN_LIST'
-,p_triggering_expression=>'Daily Total Cost Over Time,Weekly Total Cost Over Time,Monthly Total Cost Over Time'
+,p_triggering_expression=>'Daily Cost Over Time - Total,Weekly Cost Over Time - Total,Monthly Cost Over Time - Total'
 ,p_bind_type=>'bind'
 ,p_bind_event_type=>'ready'
 );
@@ -18383,9 +18743,99 @@ wwv_flow_api.create_page_da_action(
 ,p_affected_region_id=>wwv_flow_api.id(13976669023041443)
 );
 wwv_flow_api.create_page_da_event(
+ p_id=>wwv_flow_api.id(15051443371989906)
+,p_name=>'ShowCostByService'
+,p_event_sequence=>80
+,p_condition_element=>'P5_REPORT_SELECTOR'
+,p_triggering_condition_type=>'IN_LIST'
+,p_triggering_expression=>'Daily Cost By Service,Weekly Cost By Service,Monthly Cost By Service'
+,p_bind_type=>'bind'
+,p_bind_event_type=>'ready'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(15051547846989907)
+,p_event_id=>wwv_flow_api.id(15051443371989906)
+,p_event_result=>'FALSE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(15050972044989901)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(15051654533989908)
+,p_event_id=>wwv_flow_api.id(15051443371989906)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(15050972044989901)
+);
+wwv_flow_api.create_page_da_event(
+ p_id=>wwv_flow_api.id(15052224625989914)
+,p_name=>'ShowCostByCompartment'
+,p_event_sequence=>90
+,p_condition_element=>'P5_REPORT_SELECTOR'
+,p_triggering_condition_type=>'IN_LIST'
+,p_triggering_expression=>'Daily Cost By Compartment,Weekly Cost By Compartment,Monthly Cost By Compartment'
+,p_bind_type=>'bind'
+,p_bind_event_type=>'ready'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(15052351447989915)
+,p_event_id=>wwv_flow_api.id(15052224625989914)
+,p_event_result=>'FALSE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(15051727286989909)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(15052498513989916)
+,p_event_id=>wwv_flow_api.id(15052224625989914)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(15051727286989909)
+);
+wwv_flow_api.create_page_da_event(
+ p_id=>wwv_flow_api.id(15053003375989922)
+,p_name=>'ShowCostByTopCompartment'
+,p_event_sequence=>100
+,p_condition_element=>'P5_REPORT_SELECTOR'
+,p_triggering_condition_type=>'IN_LIST'
+,p_triggering_expression=>'Daily Cost By Top Compartment,Weekly Cost By Top Compartment,Monthly Cost By Top Compartment'
+,p_bind_type=>'bind'
+,p_bind_event_type=>'ready'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(15053197892989923)
+,p_event_id=>wwv_flow_api.id(15053003375989922)
+,p_event_result=>'FALSE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(15052505519989917)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(15053215915989924)
+,p_event_id=>wwv_flow_api.id(15053003375989922)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(15052505519989917)
+);
+wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13975055917041427)
 ,p_name=>'ShowDailyCostReport'
-,p_event_sequence=>80
+,p_event_sequence=>110
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Daily Cost Report'
@@ -18415,7 +18865,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13975348835041430)
 ,p_name=>'ShowDailyProductUnitReport'
-,p_event_sequence=>90
+,p_event_sequence=>120
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Daily Product Unit Report'
@@ -18445,7 +18895,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13975688110041433)
 ,p_name=>'ShowWeeklyCostReport'
-,p_event_sequence=>100
+,p_event_sequence=>130
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Weekly Cost Report'
@@ -18462,9 +18912,6 @@ wwv_flow_api.create_page_da_action(
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_api.id(12268418584281501)
 );
-end;
-/
-begin
 wwv_flow_api.create_page_da_action(
  p_id=>wwv_flow_api.id(13975895546041435)
 ,p_event_id=>wwv_flow_api.id(13975688110041433)
@@ -18478,7 +18925,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13975972745041436)
 ,p_name=>'ShowMonthlyCostReport'
-,p_event_sequence=>110
+,p_event_sequence=>140
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Monthly Cost Report'
@@ -18508,7 +18955,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13976243106041439)
 ,p_name=>'ShowReportGroupOption'
-,p_event_sequence=>120
+,p_event_sequence=>150
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'IN_LIST'
 ,p_triggering_expression=>'Daily Cost Report,Weekly Cost Report,Monthly Cost Report'
