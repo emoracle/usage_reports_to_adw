@@ -12,6 +12,7 @@ Authentication to OCI by User or instance principals.
 ![](img/screen_4.png)
 ![](img/screen_5.png)
 ![](img/screen_6.png)
+![](img/screen_7.png)
 
 ## Usage Reports
 ![](img/screen_1.png)
