@@ -28,8 +28,8 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   14:39 Wednesday May 6, 2020
---   Exported By:     ADI.ZOHAR@ORACLE.COM
+--   Date and Time:   18:29 Wednesday May 6, 2020
+--   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                      8
@@ -118,8 +118,8 @@ wwv_flow_api.create_flow(
 ,p_auto_time_zone=>'N'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
-,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200506143812'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506182856'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -10222,12 +10222,10 @@ wwv_flow_api.create_page(
  p_id=>0
 ,p_user_interface_id=>wwv_flow_api.id(9843694399688199)
 ,p_name=>'Global Page - Desktop'
-,p_step_title=>'Global Page - Desktop'
 ,p_autocomplete_on_off=>'OFF'
-,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'D'
-,p_last_updated_by=>'USAGE'
-,p_last_upd_yyyymmddhh24miss=>'20200227153336'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506182841'
 );
 end;
 /
@@ -10241,8 +10239,8 @@ wwv_flow_api.create_page(
 ,p_step_title=>'OCI Usage and Cost Report'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200502014756'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506182804'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(9856082202688393)
@@ -10283,11 +10281,12 @@ wwv_flow_api.create_page_item(
 ,p_attribute_03=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'BEGIN',
 '',
-'     htp.p(''<H5>Welcome <FONT COLOR="RED">''||:USER||''</FONT> ...<br><br>''||',
+'     htp.p(''<H4>Welcome <FONT COLOR="RED">''||:USER||''</FONT> ...<br><br>''||',
 '     ''Usage and Cost Reports to Autonomous database''||',
-'     ''<br><br>Created by <b>Adi Zohar</b>, Feb-Apr 2020<br><br>''||',
+'     ''<br><br>Created by <b>Adi Zohar</b>, Feb-May 2020<br><br>''||',
 '     ''Application github link = <a target=_new href="https://github.com/oracle/oci-python-sdk/tree/master/examples/usage_reports_to_adw">usage_reports_to_adw</a><br><br>''||',
-unistr('     ''<b>DISCLAIMER \2013 This is not an official Oracle application<b>'''),
+'     ''Please check as well <a target=_new href="https://github.com/oracle/oci-python-sdk/tree/master/examples/showoci">showoci</a> application<br><br>''||',
+unistr('     ''<H6><b>DISCLAIMER \2013 This is not an official Oracle application<b></H6>'''),
 '     );',
 '',
 'END;'))
@@ -10304,8 +10303,8 @@ wwv_flow_api.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200504115608'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506181919'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(9905068422740501)
@@ -11705,8 +11704,8 @@ wwv_flow_api.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200430125801'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506181946'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(9908591071740536)
@@ -12581,8 +12580,8 @@ wwv_flow_api.create_page(
 '}',
 '#P4_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 14px;}'))
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200504115731'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506182057'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10816553122165737)
@@ -12920,7 +12919,7 @@ wwv_flow_api.create_jet_chart_series(
 ''))
 ,p_items_value_column_name=>'COST_MY_COST'
 ,p_items_label_column_name=>'USAGE_DAY'
-,p_color=>'#4CD964'
+,p_color=>'#34AADC'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
@@ -14895,8 +14894,8 @@ wwv_flow_api.create_page(
 '}',
 '#P5_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 14px;}'))
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200506143812'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506182326'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(22846551592241693)
@@ -17563,7 +17562,7 @@ wwv_flow_api.create_jet_chart(
  p_id=>wwv_flow_api.id(15051899660989910)
 ,p_region_id=>wwv_flow_api.id(15051727286989909)
 ,p_chart_type=>'bar'
-,p_height=>'500'
+,p_height=>'450'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
@@ -17678,7 +17677,7 @@ wwv_flow_api.create_jet_chart(
  p_id=>wwv_flow_api.id(15052674611989918)
 ,p_region_id=>wwv_flow_api.id(15052505519989917)
 ,p_chart_type=>'bar'
-,p_height=>'500'
+,p_height=>'450'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
@@ -19709,7 +19708,7 @@ wwv_flow_api.create_page_plug(
 );
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(12048960742076060)
-,p_button_sequence=>90
+,p_button_sequence=>100
 ,p_button_plug_id=>wwv_flow_api.id(22846551592241693)
 ,p_button_name=>'P5_SUBMIT'
 ,p_button_action=>'SUBMIT'
@@ -19950,7 +19949,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(12052925060076066)
 ,p_name=>'P5_TAG_KEY'
-,p_item_sequence=>110
+,p_item_sequence=>120
 ,p_item_plug_id=>wwv_flow_api.id(22846551592241693)
 ,p_prompt=>'Tag Key'
 ,p_display_as=>'NATIVE_SELECT_LIST'
@@ -19977,7 +19976,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(12053398346076066)
 ,p_name=>'P5_TAG_DATA'
-,p_item_sequence=>120
+,p_item_sequence=>130
 ,p_item_plug_id=>wwv_flow_api.id(22846551592241693)
 ,p_prompt=>'Tag Data Filter'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
@@ -20167,7 +20166,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(14166029459944674)
 ,p_name=>'P5_REPORT_SELECTOR'
-,p_item_sequence=>100
+,p_item_sequence=>110
 ,p_item_plug_id=>wwv_flow_api.id(22846551592241693)
 ,p_prompt=>'Chart/Report Selector'
 ,p_display_as=>'NATIVE_SELECT_LIST'
@@ -20790,13 +20789,13 @@ wwv_flow_api.create_page(
 ,p_step_title=>'Data Statistics'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'ADI.ZOHAR@ORACLE.COM'
-,p_last_upd_yyyymmddhh24miss=>'20200430121622'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506182015'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12552815670313326)
 ,p_plug_name=>'Usage Statistics - &P6_USAGE_SIZE.'
-,p_region_template_options=>'#DEFAULT#:t-Region--accent1:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--accent15:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'BODY'
@@ -20982,7 +20981,7 @@ wwv_flow_api.create_worksheet_rpt(
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12630713145041599)
 ,p_plug_name=>'Cost Statistics - &P6_COST_SIZE.'
-,p_region_template_options=>'#DEFAULT#:t-Region--accent1:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--accent15:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'BODY'
@@ -21255,8 +21254,8 @@ wwv_flow_api.create_page(
 ,p_step_template=>wwv_flow_api.id(9721413857687955)
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
-,p_last_updated_by=>'USAGE'
-,p_last_upd_yyyymmddhh24miss=>'20200423155730'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200506182856'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(9849397199688308)
