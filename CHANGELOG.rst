@@ -11,7 +11,7 @@ The format is based on `Keep a Changelog <http://keepachangelog.com/>`_.
 * Added Graph Report Selector to the Cost pages
 * Added accumulative Chart to Cost
 * Added Manual Descriptions for products that don't have.
-* Added More Charts to Cost Over Time (By Service / Compartment / Top Compartment)
+* Added More Charts to Cost Over Time (By Service / Compartment / Top Compartment / Weekly Usage Report / Monthly Usage Report)
 
 =====================
 20.05.04 - 2020-05-04
