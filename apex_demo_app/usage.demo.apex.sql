@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   18:29 Wednesday May 6, 2020
+--   Date and Time:   20:19 Wednesday May 6, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200506182856'
+,p_last_upd_yyyymmddhh24miss=>'20200506201919'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -10304,7 +10304,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200506181919'
+,p_last_upd_yyyymmddhh24miss=>'20200506201919'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(9905068422740501)
@@ -11463,6 +11463,18 @@ wwv_flow_api.create_page_item(
 ,p_name=>'P2_DATE'
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_api.id(9905068422740501)
+,p_item_default=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select to_char(USAGE_INTERVAL_START,''YYYY-MM-DD HH24:MI'') R',
+'from ',
+'(',
+'    select ',
+'        USAGE_INTERVAL_START, ',
+'        dense_rank() over (partition by null order by USAGE_INTERVAL_START desc) rn ',
+'    from oci_usage_stats ',
+'    where tenant_name=:P2_TENANT_NAME    ',
+') where rn=3',
+''))
+,p_item_default_type=>'SQL_QUERY'
 ,p_prompt=>'Date'
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -11635,7 +11647,7 @@ wwv_flow_api.create_page_computation(
 '        dense_rank() over (partition by null order by USAGE_INTERVAL_START desc) rn ',
 '    from oci_usage_stats ',
 '    where tenant_name=:P2_TENANT_NAME    ',
-') where rn=2',
+') where rn=3',
 ''))
 ,p_compute_when=>'P2_DATE'
 ,p_compute_when_type=>'ITEM_IS_NULL'
