@@ -760,6 +760,31 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
                 cost_overageFlag = get_column_value_from_array('cost/overageFlag', row)
                 lineItem_isCorrection = get_column_value_from_array('lineItem/isCorrection', row)
 
+                # Fix OCI Data for missing product description
+                if cost_productSku == "B88285" and product_Description == "":
+                    product_Description = "Object Storage Classic"
+                    cost_billingUnitReadable = "Gigabyte Storage Capacity per Month"
+
+                elif cost_productSku == "B88272" and product_Description == "":
+                    product_Description = "Compute Classic - Unassociated Static IP"
+                    cost_billingUnitReadable = "IPs"
+
+                elif cost_productSku == "B88166" and product_Description == "":
+                    product_Description = "Oracle Identity Cloud - Standard"
+                    cost_billingUnitReadable = "Active User per Hour"
+
+                elif cost_productSku == "B88167" and product_Description == "":
+                    product_Description = "Oracle Identity Cloud - Basic"
+                    cost_billingUnitReadable = "Active User per Hour"
+
+                elif cost_productSku == "B88168" and product_Description == "":
+                    product_Description = "Oracle Identity Cloud - Basic - Consumer User"
+                    cost_billingUnitReadable = "Active User per Hour"
+
+                elif cost_productSku == "B88274" and product_Description == "":
+                    product_Description = "Block Storage Classic"
+                    cost_billingUnitReadable = "Gigabyte Storage Capacity per Month"
+
                 # create array
                 row_data = (
                     str(tenancy.name),
