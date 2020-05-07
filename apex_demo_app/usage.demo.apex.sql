@@ -28,15 +28,15 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   01:53 Thursday May 7, 2020
+--   Date and Time:   14:56 Thursday May 7, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                      8
---       Items:                   67
+--       Items:                   69
 --       Computations:            13
 --       Processes:                4
---       Regions:                 53
+--       Regions:                 52
 --       Buttons:                  5
 --       Dynamic Actions:         27
 --     Shared Components:
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200507015218'
+,p_last_upd_yyyymmddhh24miss=>'20200507123855'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -12590,15 +12590,15 @@ wwv_flow_api.create_page(
 '#P4_INFO_DISPLAY {',
 '  background-color: #FfFff0; font-size: 12px;',
 '}',
-'#P4_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 14px;}'))
+'#P4_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 13px;}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200506182057'
+,p_last_upd_yyyymmddhh24miss=>'20200507123102'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10816553122165737)
 ,p_plug_name=>' Filter'
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--accent12:t-Region--scrollBody:t-Form--noPadding:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--accent12:t-Region--scrollBody:t-Form--noPadding:margin-top-none:margin-left-none:margin-right-none'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
@@ -12638,7 +12638,7 @@ wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10814860863165720)
 ,p_plug_name=>'Cost Per SKU'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>60
@@ -12652,24 +12652,22 @@ wwv_flow_api.create_page_plug(
 wwv_flow_api.create_jet_chart(
  p_id=>wwv_flow_api.id(10814955580165721)
 ,p_region_id=>wwv_flow_api.id(10814860863165720)
-,p_chart_type=>'bar'
+,p_chart_type=>'donut'
 ,p_height=>'400'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
-,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
 ,p_hover_behavior=>'none'
-,p_stack=>'off'
-,p_connect_nulls=>'Y'
-,p_sorting=>'value-desc'
-,p_fill_multi_series_gaps=>true
-,p_zoom_and_scroll=>'off'
+,p_value_format_type=>'decimal'
+,p_value_decimal_places=>1
+,p_value_format_scaling=>'auto'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
+,p_pie_other_threshold=>0
+,p_pie_selection_effect=>'highlight'
 );
 wwv_flow_api.create_jet_chart_series(
  p_id=>wwv_flow_api.id(10815028626165722)
@@ -12679,7 +12677,7 @@ wwv_flow_api.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select ',
-'    COST_PRODUCT_SKU,',
+'    COST_PRODUCT_SKU||'' ''||min(prd_description) as COST_PRODUCT_SKU,',
 '    min(prd_description || '' - ''||prd_resource) as prd_description, ',
 '    sum(COST_MY_COST) as COST_MY_COST',
 'from oci_cost',
@@ -12705,46 +12703,16 @@ wwv_flow_api.create_jet_chart_series(
 ''))
 ,p_items_value_column_name=>'COST_MY_COST'
 ,p_items_label_column_name=>'COST_PRODUCT_SKU'
-,p_color=>'#4CD964'
-,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'insideBarEdge'
+,p_items_label_display_as=>'ALL'
 ,p_items_label_font_size=>'10'
-);
-wwv_flow_api.create_jet_chart_axis(
- p_id=>wwv_flow_api.id(10815166951165723)
-,p_chart_id=>wwv_flow_api.id(10814955580165721)
-,p_axis=>'x'
-,p_is_rendered=>'on'
-,p_format_scaling=>'auto'
-,p_scaling=>'linear'
-,p_baseline_scaling=>'zero'
-,p_major_tick_rendered=>'on'
-,p_minor_tick_rendered=>'off'
-,p_tick_label_rendered=>'on'
-,p_tick_label_rotation=>'none'
-,p_tick_label_position=>'outside'
-);
-wwv_flow_api.create_jet_chart_axis(
- p_id=>wwv_flow_api.id(10815273400165724)
-,p_chart_id=>wwv_flow_api.id(10814955580165721)
-,p_axis=>'y'
-,p_is_rendered=>'on'
-,p_format_type=>'decimal'
-,p_decimal_places=>1
-,p_format_scaling=>'none'
-,p_scaling=>'linear'
-,p_baseline_scaling=>'zero'
-,p_position=>'auto'
-,p_major_tick_rendered=>'on'
-,p_minor_tick_rendered=>'off'
-,p_tick_label_rendered=>'on'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10815862618165730)
 ,p_plug_name=>'Cost per Top Compartment'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>70
@@ -12815,7 +12783,7 @@ wwv_flow_api.create_jet_chart_series(
 ''))
 ,p_items_value_column_name=>'COST_MY_COST'
 ,p_items_label_column_name=>'TOP_LEVEL_COMPARTMENT'
-,p_color=>'#FFCC00'
+,p_color=>'#34AADC'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'insideBarEdge'
@@ -12855,7 +12823,7 @@ wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11931816111191611)
 ,p_plug_name=>'Cost Per Day'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>20
@@ -12973,7 +12941,7 @@ wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11932315365191616)
 ,p_plug_name=>'Cost Per Service'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>50
@@ -12985,24 +12953,22 @@ wwv_flow_api.create_page_plug(
 wwv_flow_api.create_jet_chart(
  p_id=>wwv_flow_api.id(11932427454191617)
 ,p_region_id=>wwv_flow_api.id(11932315365191616)
-,p_chart_type=>'bar'
+,p_chart_type=>'donut'
 ,p_height=>'400'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
-,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
 ,p_hover_behavior=>'none'
-,p_stack=>'off'
-,p_connect_nulls=>'Y'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
-,p_zoom_and_scroll=>'off'
+,p_value_format_type=>'decimal'
+,p_value_decimal_places=>1
+,p_value_format_scaling=>'auto'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
+,p_pie_other_threshold=>0
+,p_pie_selection_effect=>'highlight'
 );
 wwv_flow_api.create_jet_chart_series(
  p_id=>wwv_flow_api.id(11932548617191618)
@@ -13037,46 +13003,16 @@ wwv_flow_api.create_jet_chart_series(
 ''))
 ,p_items_value_column_name=>'COST_MY_COST'
 ,p_items_label_column_name=>'PRD_SERVICE'
-,p_color=>'#4CD964'
-,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'insideBarEdge'
+,p_items_label_display_as=>'LBL_VAL'
 ,p_items_label_font_size=>'10'
-);
-wwv_flow_api.create_jet_chart_axis(
- p_id=>wwv_flow_api.id(11932611273191619)
-,p_chart_id=>wwv_flow_api.id(11932427454191617)
-,p_axis=>'x'
-,p_is_rendered=>'on'
-,p_format_scaling=>'auto'
-,p_scaling=>'linear'
-,p_baseline_scaling=>'zero'
-,p_major_tick_rendered=>'on'
-,p_minor_tick_rendered=>'off'
-,p_tick_label_rendered=>'on'
-,p_tick_label_rotation=>'auto'
-,p_tick_label_position=>'outside'
-);
-wwv_flow_api.create_jet_chart_axis(
- p_id=>wwv_flow_api.id(11932780095191620)
-,p_chart_id=>wwv_flow_api.id(11932427454191617)
-,p_axis=>'y'
-,p_is_rendered=>'on'
-,p_format_type=>'decimal'
-,p_decimal_places=>1
-,p_format_scaling=>'none'
-,p_scaling=>'linear'
-,p_baseline_scaling=>'zero'
-,p_position=>'auto'
-,p_major_tick_rendered=>'on'
-,p_minor_tick_rendered=>'off'
-,p_tick_label_rendered=>'on'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(12317143055646735)
 ,p_plug_name=>'Cost Explorer'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>100
@@ -13418,7 +13354,7 @@ wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(13974097805041417)
 ,p_plug_name=>'Cost Per Day Accumulated'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>30
@@ -13551,7 +13487,7 @@ wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(21606421457513668)
 ,p_plug_name=>'Cost Report'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>90
 ,p_plug_display_point=>'BODY'
@@ -13763,7 +13699,7 @@ wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(21607460724513679)
 ,p_plug_name=>'Cost per Single Compartment'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>80
@@ -13826,7 +13762,7 @@ wwv_flow_api.create_jet_chart_series(
 ''))
 ,p_items_value_column_name=>'COST_MY_COST'
 ,p_items_label_column_name=>'PRD_COMPARTMENT_NAME'
-,p_color=>'#FFCC00'
+,p_color=>'#34AADC'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'insideBarEdge'
@@ -13874,7 +13810,7 @@ wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(21624153346489267)
 ,p_plug_name=>'Cost Per Region'
 ,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
 ,p_plug_display_sequence=>40
@@ -13887,7 +13823,7 @@ wwv_flow_api.create_page_plug(
 wwv_flow_api.create_jet_chart(
  p_id=>wwv_flow_api.id(11715360383773208)
 ,p_region_id=>wwv_flow_api.id(21624153346489267)
-,p_chart_type=>'pie'
+,p_chart_type=>'donut'
 ,p_height=>'400'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
@@ -13895,7 +13831,7 @@ wwv_flow_api.create_jet_chart(
 ,p_data_cursor_behavior=>'auto'
 ,p_hover_behavior=>'dim'
 ,p_value_format_type=>'decimal'
-,p_value_decimal_places=>0
+,p_value_decimal_places=>1
 ,p_value_format_scaling=>'auto'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
@@ -13940,18 +13876,6 @@ wwv_flow_api.create_jet_chart_series(
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
 ,p_items_label_display_as=>'ALL'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(27322408441256235)
-,p_plug_name=>'Graph Report Selector'
-,p_parent_plug_id=>wwv_flow_api.id(21608843544513693)
-,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--removeHeader:t-Region--noUI:t-Region--hiddenOverflow:t-Form--noPadding:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
-,p_plug_template=>wwv_flow_api.id(9765042323688020)
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'BODY'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(21609013755513694)
@@ -14268,20 +14192,20 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(11706547559773195)
 ,p_name=>'P4_LAST_DATE_LOADED'
-,p_item_sequence=>150
-,p_item_plug_id=>wwv_flow_api.id(10816553122165737)
+,p_item_sequence=>90
+,p_item_plug_id=>wwv_flow_api.id(10817046393165742)
 ,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Last Date Loaded'
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select ',
-'    to_char(max(USAGE_INTERVAL_START),''DD-MON-YYYY DY HH24:MI'') dte',
+'    to_char(max(USAGE_INTERVAL_START),''MM/DD/YY HH24:MI'') dte',
 'from oci_cost_stats',
 'where ',
 '    tenant_name=:P4_TENANT_NAME'))
 ,p_source_type=>'QUERY'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_begin_on_new_line=>'N'
-,p_colspan=>3
+,p_colspan=>4
 ,p_field_template=>wwv_flow_api.id(9820028477688087)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attribute_01=>'Y'
@@ -14392,7 +14316,7 @@ wwv_flow_api.create_page_item(
 'from ',
 '    OCI_COST_REFERENCE ',
 'where',
-'    tenant_name=:P5_TENANT_NAME',
+'    tenant_name=:P4_TENANT_NAME',
 '    and ref_type=''COST_SUBSCRIPTION_ID''',
 'order by 1'))
 ,p_source_type=>'QUERY_COLON'
@@ -14405,9 +14329,6 @@ wwv_flow_api.create_page_item(
 ,p_attribute_02=>'VALUE'
 ,p_attribute_04=>'Y'
 );
-end;
-/
-begin
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(11963890951367066)
 ,p_name=>'P4_TAG_KEY'
@@ -14435,17 +14356,20 @@ wwv_flow_api.create_page_item(
 ,p_attribute_01=>'NONE'
 ,p_attribute_02=>'N'
 );
+end;
+/
+begin
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(12552627388313324)
 ,p_name=>'P4_INFO'
 ,p_item_sequence=>80
 ,p_item_plug_id=>wwv_flow_api.id(10817046393165742)
-,p_prompt=>'First two days and Last two days of cost reports'
+,p_prompt=>'First and Last two days are incomplete'
 ,p_format_mask=>'FML999G999G999G999G990D00'
-,p_source=>'are incomplete and should not be used for calculation'
+,p_source=>'and should not be used for calculation'
 ,p_source_type=>'STATIC'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_colspan=>12
+,p_colspan=>8
 ,p_field_template=>wwv_flow_api.id(9820028477688087)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attribute_01=>'Y'
@@ -14455,19 +14379,20 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(13968875950017111)
 ,p_name=>'P4_REPORT_SELECTOR'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_api.id(27322408441256235)
+,p_item_sequence=>150
+,p_item_plug_id=>wwv_flow_api.id(10816553122165737)
 ,p_prompt=>'Chart/Report Selector'
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_lov=>'STATIC2:Cost Per Day;Cost Per Day,Cost Per Day Accumulated;Cost Per Day Accumulated,Cost Per Region;Cost Per Region,Cost Per Service;Cost Per Service,Cost Per SKU;Cost Per SKU,Cost Per Top Compartment;Cost Per Top Compartment,Cost Per Single Compartm'
 ||'ent;Cost Per Single Compartment,Cost Report;Cost Report,Cost Explorer;Cost Explorer'
 ,p_cHeight=>1
+,p_begin_on_new_line=>'N'
 ,p_colspan=>3
 ,p_field_template=>wwv_flow_api.id(9820028477688087)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
-,p_attribute_01=>'SUBMIT'
-,p_attribute_03=>'Y'
+,p_attribute_01=>'NONE'
+,p_attribute_02=>'N'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(14186142698270002)
@@ -14904,10 +14829,10 @@ wwv_flow_api.create_page(
 '#P5_INFO_DISPLAY {',
 '  background-color: #FfFff0; font-size: 12px;',
 '}',
-'#P5_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 14px;}'))
+'#P5_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 13px;}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200507015218'
+,p_last_upd_yyyymmddhh24miss=>'20200507123855'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(22846551592241693)
@@ -20218,7 +20143,7 @@ wwv_flow_api.create_page_item(
 ,p_item_sequence=>50
 ,p_item_plug_id=>wwv_flow_api.id(22847044863241698)
 ,p_use_cache_before_default=>'NO'
-,p_prompt=>'Rows with Cost Filtered'
+,p_prompt=>'Rows Filtered'
 ,p_format_mask=>'999G999G999G999G999G999G990'
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select sum(cnt) ',
@@ -20249,7 +20174,7 @@ wwv_flow_api.create_page_item(
 ')'))
 ,p_source_type=>'QUERY'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_colspan=>6
+,p_colspan=>4
 ,p_field_template=>wwv_flow_api.id(9820028477688087)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attribute_01=>'Y'
@@ -20259,7 +20184,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(12055265653076068)
 ,p_name=>'P5_SUBSCRIPTION'
-,p_item_sequence=>60
+,p_item_sequence=>70
 ,p_item_plug_id=>wwv_flow_api.id(22847044863241698)
 ,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Subscription Id'
@@ -20275,7 +20200,7 @@ wwv_flow_api.create_page_item(
 ,p_source_type=>'QUERY_COLON'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_begin_on_new_line=>'N'
-,p_colspan=>6
+,p_colspan=>4
 ,p_field_template=>wwv_flow_api.id(9820028477688087)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attribute_01=>'Y'
@@ -20285,14 +20210,14 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(12552781677313325)
 ,p_name=>'P5_INFO'
-,p_item_sequence=>70
+,p_item_sequence=>80
 ,p_item_plug_id=>wwv_flow_api.id(22847044863241698)
-,p_prompt=>'First two days and Last two days of cost reports'
+,p_prompt=>'First and Last two days are incomplete'
 ,p_format_mask=>'FML999G999G999G999G990D00'
-,p_source=>'are incomplete and should not be used for calculation'
+,p_source=>'and should not be used for calculation'
 ,p_source_type=>'STATIC'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_colspan=>12
+,p_colspan=>8
 ,p_field_template=>wwv_flow_api.id(9820028477688087)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attribute_01=>'Y'
@@ -20420,6 +20345,76 @@ wwv_flow_api.create_page_item(
 ,p_attribute_02=>'VALUE'
 ,p_attribute_04=>'Y'
 );
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(15475859577450204)
+,p_name=>'P5_LAST_DATE_LOADED'
+,p_item_sequence=>90
+,p_item_plug_id=>wwv_flow_api.id(22847044863241698)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'Last Date Loaded'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'    to_char(max(USAGE_INTERVAL_START),''MM/DD/YY HH24:MI'') dte',
+'from oci_cost_stats',
+'where ',
+'    tenant_name=:P5_TENANT_NAME'))
+,p_source_type=>'QUERY'
+,p_display_as=>'NATIVE_DISPLAY_ONLY'
+,p_begin_on_new_line=>'N'
+,p_colspan=>4
+,p_field_template=>wwv_flow_api.id(9820028477688087)
+,p_item_template_options=>'#DEFAULT#'
+,p_attribute_01=>'Y'
+,p_attribute_02=>'VALUE'
+,p_attribute_04=>'Y'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(15476787556464715)
+,p_name=>'P5_DAYS_DATA'
+,p_item_sequence=>60
+,p_item_plug_id=>wwv_flow_api.id(22847044863241698)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'Days of Data'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select to_char(sum(cnt)/24,''99999.0'')',
+'from',
+'(',
+'    select ',
+'        count(distinct USAGE_INTERVAL_START) cnt',
+'    from oci_cost',
+'    where ',
+'        tenant_name=:P5_TENANT_NAME and',
+'        (:P5_COMPARTMENT_NAME is null or prd_compartment_name = :P5_COMPARTMENT_NAME) and',
+'        (:P5_PRODUCT_SERVICE is null or prd_service = :P5_PRODUCT_SERVICE) and',
+'        (:P5_PRODUCT_REGION is null or prd_region = :P5_PRODUCT_REGION) and',
+'        (:P5_COMPARTMENT_TOP is null or prd_compartment_path like :P5_COMPARTMENT_TOP ||''%'') and',
+'        (:P5_TAG_KEY is null or tags_data like ''%#'' || :P5_TAG_KEY || ''=%'') and',
+'        (:P5_TAG_DATA is null or tags_data like ''%#'' || nvl(:P5_TAG_KEY,''%'') || ''=%'' || :P5_TAG_DATA || ''#'') and',
+'        (:P5_COST_PRODUCT_SKU is null or COST_PRODUCT_SKU = :P5_COST_PRODUCT_SKU) and',
+'        (:P5_PERIOD=''Daily'' and to_char(USAGE_INTERVAL_START,''YYYY-MM'') = :P5_PERIOD_RANGE or :P5_PERIOD in (''Monthly'',''Weekly'') and to_char(USAGE_INTERVAL_START,''YYYY'') = :P5_PERIOD_RANGE) and',
+'        not (:P5_COMPARTMENT_NAME is null and :P5_PRODUCT_SERVICE is null and :P5_PRODUCT_REGION is null and :P5_COMPARTMENT_TOP is null and :P5_TAG_KEY is null and :P5_TAG_DATA is null and :P5_COST_PRODUCT_SKU is null)',
+'    union all',
+'    select ',
+'        count(distinct USAGE_INTERVAL_START) cnt',
+'    from oci_cost_stats',
+'    where ',
+'        tenant_name=:P5_TENANT_NAME and',
+'        (:P5_PERIOD=''Daily'' and to_char(USAGE_INTERVAL_START,''YYYY-MM'') = :P5_PERIOD_RANGE or :P5_PERIOD in (''Monthly'',''Weekly'') and to_char(USAGE_INTERVAL_START,''YYYY'') = :P5_PERIOD_RANGE) and',
+'        (:P5_COMPARTMENT_NAME is null and :P5_PRODUCT_SERVICE is null and :P5_PRODUCT_REGION is null and :P5_COMPARTMENT_TOP is null and :P5_TAG_KEY is null and :P5_TAG_DATA is null and :P5_COST_PRODUCT_SKU is null)',
+')'))
+,p_source_type=>'QUERY'
+,p_display_as=>'NATIVE_DISPLAY_ONLY'
+,p_begin_on_new_line=>'N'
+,p_colspan=>4
+,p_field_template=>wwv_flow_api.id(9820028477688087)
+,p_item_template_options=>'#DEFAULT#'
+,p_attribute_01=>'Y'
+,p_attribute_02=>'VALUE'
+,p_attribute_04=>'Y'
+);
+end;
+/
+begin
 wwv_flow_api.create_page_computation(
  p_id=>wwv_flow_api.id(11934077528191633)
 ,p_computation_sequence=>10
@@ -20487,9 +20482,6 @@ wwv_flow_api.create_page_da_event(
 ,p_bind_type=>'bind'
 ,p_bind_event_type=>'change'
 );
-end;
-/
-begin
 wwv_flow_api.create_page_da_action(
  p_id=>wwv_flow_api.id(12057068282076074)
 ,p_event_id=>wwv_flow_api.id(12056031796076072)
