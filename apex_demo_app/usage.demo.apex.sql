@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   01:42 Thursday May 7, 2020
+--   Date and Time:   01:53 Thursday May 7, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200507014004'
+,p_last_upd_yyyymmddhh24miss=>'20200507015218'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -14907,7 +14907,7 @@ wwv_flow_api.create_page(
 '#P5_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 14px;}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200507014004'
+,p_last_upd_yyyymmddhh24miss=>'20200507015218'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(22846551592241693)
@@ -19868,6 +19868,18 @@ wwv_flow_api.create_page_item(
 ,p_name=>'P5_PERIOD_RANGE'
 ,p_item_sequence=>60
 ,p_item_plug_id=>wwv_flow_api.id(22846551592241693)
+,p_item_default=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select max(',
+'          case ',
+'              when :P5_PERIOD = ''Daily'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM'') ',
+'              when :P5_PERIOD in (''Monthly'',''Weekly'') then to_char(USAGE_INTERVAL_START,''YYYY'') ',
+'          end) period',
+'     from ',
+'         oci_cost_stats',
+'     where',
+'     tenant_name=:P5_TENANT_NAME ',
+''))
+,p_item_default_type=>'SQL_QUERY'
 ,p_prompt=>'Year / Month'
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -20475,6 +20487,9 @@ wwv_flow_api.create_page_da_event(
 ,p_bind_type=>'bind'
 ,p_bind_event_type=>'change'
 );
+end;
+/
+begin
 wwv_flow_api.create_page_da_action(
  p_id=>wwv_flow_api.id(12057068282076074)
 ,p_event_id=>wwv_flow_api.id(12056031796076072)
@@ -20485,9 +20500,6 @@ wwv_flow_api.create_page_da_action(
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_api.id(33639012225589650)
 );
-end;
-/
-begin
 wwv_flow_api.create_page_da_action(
  p_id=>wwv_flow_api.id(12057571185076074)
 ,p_event_id=>wwv_flow_api.id(12056031796076072)
