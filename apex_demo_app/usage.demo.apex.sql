@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   20:19 Wednesday May 6, 2020
+--   Date and Time:   01:42 Thursday May 7, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -36,9 +36,9 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 --       Items:                   67
 --       Computations:            13
 --       Processes:                4
---       Regions:                 52
+--       Regions:                 53
 --       Buttons:                  5
---       Dynamic Actions:         26
+--       Dynamic Actions:         27
 --     Shared Components:
 --       Logic:
 --         App Settings:           1
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200506201919'
+,p_last_upd_yyyymmddhh24miss=>'20200507014004'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -14907,7 +14907,7 @@ wwv_flow_api.create_page(
 '#P5_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 14px;}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200506182326'
+,p_last_upd_yyyymmddhh24miss=>'20200507014004'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(22846551592241693)
@@ -14953,7 +14953,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Monthly Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>70
+,p_display_sequence=>80
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -15270,7 +15270,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Daily Cost Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>90
+,p_display_sequence=>100
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -15894,7 +15894,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Weekly Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>120
+,p_display_sequence=>130
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -16749,7 +16749,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Daily Product Unit Report - Single'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>100
+,p_display_sequence=>110
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -17443,6 +17443,118 @@ wwv_flow_api.create_jet_chart_axis(
 ,p_tick_label_position=>'outside'
 );
 wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(14186462781270005)
+,p_plug_name=>'Cost By Region - &P5_PERIOD.'
+,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>wwv_flow_api.id(9765042323688020)
+,p_plug_display_sequence=>60
+,p_plug_display_point=>'BODY'
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_query_num_rows=>15
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_jet_chart(
+ p_id=>wwv_flow_api.id(14186570488270006)
+,p_region_id=>wwv_flow_api.id(14186462781270005)
+,p_chart_type=>'bar'
+,p_height=>'450'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'none'
+,p_hover_behavior=>'none'
+,p_stack=>'on'
+,p_stack_label=>'on'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'end'
+);
+wwv_flow_api.create_jet_chart_series(
+ p_id=>wwv_flow_api.id(14186672156270007)
+,p_chart_id=>wwv_flow_api.id(14186570488270006)
+,p_seq=>10
+,p_name=>'Usage'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'    case ',
+'        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
+'        when :P5_PERIOD=''Weekly'' then to_char(USAGE_INTERVAL_START,''YYYY-WW'') ',
+'        when :P5_PERIOD=''Monthly'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM-MON'')',
+'    end PERIOD,',
+'    prd_region as region,',
+'    sum(COST_MY_COST) as COST_USAGE',
+'from oci_cost',
+'where ',
+'    tenant_name=:P5_TENANT_NAME and',
+'    (:P5_COMPARTMENT_NAME is null or prd_compartment_name = :P5_COMPARTMENT_NAME) and',
+'    (:P5_COMPARTMENT_TOP is null or prd_compartment_path like :P5_COMPARTMENT_TOP ||''%'') and',
+'    (:P5_PRODUCT_SERVICE is null or prd_service = :P5_PRODUCT_SERVICE) and',
+'    (:P5_PRODUCT_REGION is null or prd_region = :P5_PRODUCT_REGION) and',
+'    (:P5_COST_PRODUCT_SKU is null or COST_PRODUCT_SKU = :P5_COST_PRODUCT_SKU) and',
+'    (:P5_TAG_KEY is null or tags_data like ''%#'' || :P5_TAG_KEY || ''=%'') and',
+'    (:P5_TAG_DATA is null or tags_data like ''%#'' || nvl(:P5_TAG_KEY,''%'') || ''=%'' || :P5_TAG_DATA || ''#'') and',
+'    (:P5_PERIOD=''Daily'' and to_char(USAGE_INTERVAL_START,''YYYY-MM'') = :P5_PERIOD_RANGE or :P5_PERIOD in (''Monthly'',''Weekly'') and to_char(USAGE_INTERVAL_START,''YYYY'') = :P5_PERIOD_RANGE) and',
+'    :P5_REPORT_SELECTOR in (''Daily Cost By Region'',''Weekly Cost By Region'',''Monthly Cost By Region'')    ',
+'    group by ',
+'    case ',
+'        when :P5_PERIOD=''Daily'' then to_char(USAGE_INTERVAL_START,''YYYY-MM-DD'') ',
+'        when :P5_PERIOD=''Weekly'' then to_char(USAGE_INTERVAL_START,''YYYY-WW'') ',
+'        when :P5_PERIOD=''Monthly'' or :P5_PERIOD is null then to_char(USAGE_INTERVAL_START,''YYYY-MM-MON'')',
+'    end,',
+'    prd_region ',
+'order by 1,2'))
+,p_series_name_column_name=>'REGION'
+,p_items_value_column_name=>'COST_USAGE'
+,p_items_label_column_name=>'PERIOD'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'center'
+,p_items_label_font_size=>'10'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(14186775683270008)
+,p_chart_id=>wwv_flow_api.id(14186570488270006)
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>1
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(14186828501270009)
+,p_chart_id=>wwv_flow_api.id(14186570488270006)
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_type=>'date-short'
+,p_numeric_pattern=>'DD-MON-YYYY'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(15050972044989901)
 ,p_plug_name=>'Cost By Service - &P5_PERIOD.'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
@@ -17526,6 +17638,9 @@ wwv_flow_api.create_jet_chart_series(
 ,p_items_label_position=>'center'
 ,p_items_label_font_size=>'10'
 );
+end;
+/
+begin
 wwv_flow_api.create_jet_chart_axis(
  p_id=>wwv_flow_api.id(15051263494989904)
 ,p_chart_id=>wwv_flow_api.id(15051010405989902)
@@ -17638,9 +17753,6 @@ wwv_flow_api.create_jet_chart_series(
 ,p_items_label_position=>'center'
 ,p_items_label_font_size=>'10'
 );
-end;
-/
-begin
 wwv_flow_api.create_jet_chart_axis(
  p_id=>wwv_flow_api.id(15052096900989912)
 ,p_chart_id=>wwv_flow_api.id(15051899660989910)
@@ -17679,7 +17791,7 @@ wwv_flow_api.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(9765042323688020)
-,p_plug_display_sequence=>60
+,p_plug_display_sequence=>70
 ,p_plug_display_point=>'BODY'
 ,p_plug_source_type=>'NATIVE_JET_CHART'
 ,p_plug_query_num_rows=>15
@@ -17789,7 +17901,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Daily Product Unit Report - Total'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>110
+,p_display_sequence=>120
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -18348,7 +18460,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Weekly Product Unit Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>130
+,p_display_sequence=>140
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -19218,7 +19330,7 @@ wwv_flow_api.create_report_region(
 ,p_name=>'Monthly Product Unit Report'
 ,p_parent_plug_id=>wwv_flow_api.id(33638842014589649)
 ,p_template=>wwv_flow_api.id(9765042323688020)
-,p_display_sequence=>80
+,p_display_sequence=>90
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_display_point=>'BODY'
@@ -20191,6 +20303,8 @@ wwv_flow_api.create_page_item(
 '    union all',
 '    select ''Daily Cost By Service'' report_name from dual where :P5_PERIOD=''Daily''',
 '    union all',
+'    select ''Daily Cost By Region'' report_name from dual where :P5_PERIOD=''Daily''',
+'    union all',
 '    select ''Daily Cost By Compartment'' report_name from dual where :P5_PERIOD=''Daily''',
 '    union all',
 '    select ''Daily Cost By Top Compartment'' report_name from dual where :P5_PERIOD=''Daily''',
@@ -20207,6 +20321,8 @@ wwv_flow_api.create_page_item(
 '    union all',
 '    select ''Weekly Cost By Service'' report_name from dual where :P5_PERIOD=''Weekly''',
 '    union all',
+'    select ''Weekly Cost By Region'' report_name from dual where :P5_PERIOD=''Weekly''',
+'    union all',
 '    select ''Weekly Cost By Compartment'' report_name from dual where :P5_PERIOD=''Weekly''',
 '    union all',
 '    select ''Weekly Cost By Top Compartment'' report_name from dual where :P5_PERIOD=''Weekly''',
@@ -20218,6 +20334,8 @@ wwv_flow_api.create_page_item(
 '    select ''Monthly Cost Over Time'' report_name from dual where :P5_PERIOD=''Monthly''',
 '    union all',
 '    select ''Monthly Cost By Service'' report_name from dual where :P5_PERIOD=''Monthly''',
+'    union all',
+'    select ''Monthly Cost By Region'' report_name from dual where :P5_PERIOD=''Monthly''',
 '    union all',
 '    select ''Monthly Cost By Compartment'' report_name from dual where :P5_PERIOD=''Monthly''',
 '    union all',
@@ -20367,6 +20485,9 @@ wwv_flow_api.create_page_da_action(
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_api.id(33639012225589650)
 );
+end;
+/
+begin
 wwv_flow_api.create_page_da_action(
  p_id=>wwv_flow_api.id(12057571185076074)
 ,p_event_id=>wwv_flow_api.id(12056031796076072)
@@ -20377,9 +20498,6 @@ wwv_flow_api.create_page_da_action(
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_api.id(33638842014589649)
 );
-end;
-/
-begin
 wwv_flow_api.create_page_da_action(
  p_id=>wwv_flow_api.id(12056590627076074)
 ,p_event_id=>wwv_flow_api.id(12056031796076072)
@@ -20521,9 +20639,39 @@ wwv_flow_api.create_page_da_action(
 ,p_affected_region_id=>wwv_flow_api.id(15051727286989909)
 );
 wwv_flow_api.create_page_da_event(
+ p_id=>wwv_flow_api.id(14186923617270010)
+,p_name=>'ShowCostByRegion'
+,p_event_sequence=>100
+,p_condition_element=>'P5_REPORT_SELECTOR'
+,p_triggering_condition_type=>'IN_LIST'
+,p_triggering_expression=>'Daily Cost By Region,Weekly Cost By Region,Monthly Cost By Region'
+,p_bind_type=>'bind'
+,p_bind_event_type=>'ready'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(14187079283270011)
+,p_event_id=>wwv_flow_api.id(14186923617270010)
+,p_event_result=>'FALSE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(14186462781270005)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(14187141686270012)
+,p_event_id=>wwv_flow_api.id(14186923617270010)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(14186462781270005)
+);
+wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(15053003375989922)
 ,p_name=>'ShowCostByTopCompartment'
-,p_event_sequence=>100
+,p_event_sequence=>110
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'IN_LIST'
 ,p_triggering_expression=>'Daily Cost By Top Compartment,Weekly Cost By Top Compartment,Monthly Cost By Top Compartment'
@@ -20553,7 +20701,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13975055917041427)
 ,p_name=>'ShowDailyCostReport'
-,p_event_sequence=>110
+,p_event_sequence=>120
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Daily Cost Report'
@@ -20583,7 +20731,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13975348835041430)
 ,p_name=>'ShowDailyProductUnitReportSingle'
-,p_event_sequence=>120
+,p_event_sequence=>130
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Daily Product Unit Report - Single'
@@ -20613,7 +20761,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(15083319206497508)
 ,p_name=>'ShowDailyProductUnitReportTotal'
-,p_event_sequence=>130
+,p_event_sequence=>140
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Daily Product Unit Report - Total'
@@ -20643,7 +20791,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13975688110041433)
 ,p_name=>'ShowWeeklyCostReport'
-,p_event_sequence=>140
+,p_event_sequence=>150
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Weekly Cost Report'
@@ -20673,7 +20821,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(15104375728532031)
 ,p_name=>'ShowWeeklyProductUnitReport'
-,p_event_sequence=>150
+,p_event_sequence=>160
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Weekly Product Unit Report'
@@ -20703,7 +20851,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(15104677803532034)
 ,p_name=>'ShowMonthlyProductUnitReport'
-,p_event_sequence=>160
+,p_event_sequence=>170
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Monthly Product Unit Report'
@@ -20733,7 +20881,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13975972745041436)
 ,p_name=>'ShowMonthlyCostReport'
-,p_event_sequence=>170
+,p_event_sequence=>180
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'EQUALS'
 ,p_triggering_expression=>'Monthly Cost Report'
@@ -20763,7 +20911,7 @@ wwv_flow_api.create_page_da_action(
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(13976243106041439)
 ,p_name=>'ShowReportGroupOption'
-,p_event_sequence=>180
+,p_event_sequence=>190
 ,p_condition_element=>'P5_REPORT_SELECTOR'
 ,p_triggering_condition_type=>'IN_LIST'
 ,p_triggering_expression=>'Daily Cost Report,Weekly Cost Report,Monthly Cost Report'
