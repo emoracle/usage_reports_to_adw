@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   17:12 Tuesday May 12, 2020
+--   Date and Time:   17:33 Tuesday May 12, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -68,7 +68,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 --       Globalization:
 --       Reports:
 --       E-Mail:
---     Supporting Objects:  Included
+--     Supporting Objects:  Excluded
 --   Version:         19.2.0.00.18
 --   Instance ID:     9710412995014033
 --
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512171218'
+,p_last_upd_yyyymmddhh24miss=>'20200512173227'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -21433,7 +21433,7 @@ wwv_flow_api.create_page(
 ''))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512171218'
+,p_last_upd_yyyymmddhh24miss=>'20200512173227'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(72369311697812384)
@@ -21616,7 +21616,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'PCT_PAYGO'
 ,p_display_order=>90
 ,p_column_identifier=>'I'
-,p_column_label=>'% PayGo'
+,p_column_label=>'% Discount PayGo'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D00'
@@ -21637,7 +21637,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'PCT_MONTH'
 ,p_display_order=>110
 ,p_column_identifier=>'K'
-,p_column_label=>'% Month Flex'
+,p_column_label=>'% Discount Month Flex'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D00'
@@ -21987,23 +21987,6 @@ wwv_flow_api.create_page_process(
 ':P9999_USERNAME := apex_authentication.get_login_username_cookie;',
 ':P9999_REMEMBER := case when :P9999_USERNAME is not null then ''Y'' end;'))
 );
-end;
-/
-prompt --application/deployment/definition
-begin
-wwv_flow_api.create_install(
- p_id=>wwv_flow_api.id(10020398401823178)
-);
-end;
-/
-prompt --application/deployment/checks
-begin
-null;
-end;
-/
-prompt --application/deployment/buildoptions
-begin
-null;
 end;
 /
 prompt --application/end_environment
