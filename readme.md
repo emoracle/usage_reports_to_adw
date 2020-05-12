@@ -21,6 +21,9 @@ Authentication to OCI by User or instance principals.
 ![](img/screen_6.png)
 ![](img/screen_7.png)
 
+## Rate Card
+![](img/screen_8.png)
+
 ## Usage Reports
 ![](img/screen_1.png)
 ![](img/screen_2.png)
