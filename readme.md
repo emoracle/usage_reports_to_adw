@@ -13,7 +13,7 @@ Authentication to OCI by User or instance principals.
 - Usage Over Time
 - Cost Analysis
 - Cost Over Time
-- Rate Card
+- Rate Card for Used Products
 
 ## Cost Reports
 ![](img/screen_4.png)
