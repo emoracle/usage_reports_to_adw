@@ -53,6 +53,7 @@
 # - OCI_COST_STATS - Summary Stats of the Cost Report for quick query if only filtered by tenant and date
 # - OCI_COST_TAG_KEYS - Tag keys of the cost reports
 # - OCI_COST_REFERENCE - Reference table of the cost filter keys - SERVICE, REGION, COMPARTMENT, PRODUCT, SUBSCRIPTION
+# - OCI_PRICE_LIST - Hold the price list and the cost per product
 ##########################################################################
 import sys
 import argparse
@@ -63,7 +64,7 @@ import os
 import csv
 import cx_Oracle
 
-version = "20.05.11"
+version = "20.05.18"
 usage_report_namespace = "bling"
 work_report_dir = os.curdir + "/work_report_dir"
 
@@ -436,6 +437,58 @@ def update_cost_stats(connection):
 
 
 ##########################################################################
+# update_price_list
+##########################################################################
+def update_price_list(connection):
+    try:
+        # open cursor
+        cursor = connection.cursor()
+
+        print("\nMerging statistics into OCI_PRICE_LIST...")
+
+        # run merge to oci_update_stats
+        sql = "MERGE INTO OCI_PRICE_LIST A "
+        sql += "USING "
+        sql += "( "
+        sql += "    SELECT "
+        sql += "        TENANT_NAME, "
+        sql += "        COST_PRODUCT_SKU, "
+        sql += "        PRD_DESCRIPTION, "
+        sql += "        COST_CURRENCY_CODE, "
+        sql += "        COST_UNIT_PRICE "
+        sql += "    FROM "
+        sql += "    ( "
+        sql += "        SELECT  "
+        sql += "            TENANT_NAME, "
+        sql += "            COST_PRODUCT_SKU, "
+        sql += "            PRD_DESCRIPTION, "
+        sql += "            COST_CURRENCY_CODE, "
+        sql += "            COST_UNIT_PRICE, "
+        sql += "            ROW_NUMBER() OVER (PARTITION BY TENANT_NAME, COST_PRODUCT_SKU ORDER BY USAGE_INTERVAL_START DESC, COST_UNIT_PRICE DESC) RN "
+        sql += "        FROM OCI_COST A  "
+        sql += "    )     "
+        sql += "    WHERE RN = 1 "
+        sql += "    ORDER BY 1,2 "
+        sql += ") B "
+        sql += "ON (A.TENANT_NAME = B.TENANT_NAME AND A.COST_PRODUCT_SKU = B.COST_PRODUCT_SKU) "
+        sql += "WHEN MATCHED THEN UPDATE SET A.PRD_DESCRIPTION=B.PRD_DESCRIPTION, A.COST_CURRENCY_CODE=B.COST_CURRENCY_CODE, A.COST_UNIT_PRICE=B.COST_UNIT_PRICE, COST_LAST_UPDATE = SYSDATE "
+        sql += "WHEN NOT MATCHED THEN INSERT (TENANT_NAME,COST_PRODUCT_SKU,PRD_DESCRIPTION,COST_CURRENCY_CODE,COST_UNIT_PRICE,COST_LAST_UPDATE)  "
+        sql += "  VALUES (B.TENANT_NAME,B.COST_PRODUCT_SKU,B.PRD_DESCRIPTION,B.COST_CURRENCY_CODE,B.COST_UNIT_PRICE,SYSDATE)"
+
+        cursor.execute(sql)
+        connection.commit()
+        print("   Merge Completed, " + str(cursor.rowcount) + " rows merged")
+        cursor.close()
+
+    except cx_Oracle.DatabaseError as e:
+        print("\nError manipulating database at update_price_list() - " + str(e) + "\n")
+        raise SystemExit
+
+    except Exception as e:
+        raise Exception("\nError manipulating database at update_price_list() - " + str(e))
+
+
+##########################################################################
 # update_cost_reference
 ##########################################################################
 def update_cost_reference(connection):
@@ -667,6 +720,51 @@ def check_database_table_structure_cost(connection):
         raise Exception("\nError manipulating database at check_database_table_structure_cost() - " + str(e))
 
 
+##########################################################################
+# Check Table Structure Price List
+##########################################################################
+def check_database_table_structure_price_list(connection):
+    try:
+        # open cursor
+        cursor = connection.cursor()
+
+        # check if OCI_PRICE_LIST table exist, if not create
+        sql = "select count(*) from user_tables where table_name = 'OCI_PRICE_LIST'"
+        cursor.execute(sql)
+        val, = cursor.fetchone()
+
+        # if table not exist, create it
+        if val == 0:
+            print("   Table OCI_PRICE_LIST was not exist, creating")
+            sql = "create table OCI_PRICE_LIST ("
+            sql += "    TENANT_NAME             VARCHAR2(100),"
+            sql += "    COST_PRODUCT_SKU        VARCHAR2(10),"
+            sql += "    PRD_DESCRIPTION         VARCHAR2(1000),"
+            sql += "    COST_CURRENCY_CODE      VARCHAR2(10),"
+            sql += "    COST_UNIT_PRICE         NUMBER,"
+            sql += "    COST_LAST_UPDATE        DATE,"
+            sql += "    RATE_DESCRIPTION        VARCHAR2(1000),"
+            sql += "    RATE_PAYGO_PRICE        NUMBER,"
+            sql += "    RATE_MONTHLY_FLEX_PRICE NUMBER,"
+            sql += "    RATE_UPDATE_DATE        DATE,"
+            sql += "    CONSTRAINT OCI_PRICE_LIST_PK PRIMARY KEY (TENANT_NAME,COST_PRODUCT_SKU) "
+            sql += ") "
+            cursor.execute(sql)
+            print("   Table OCI_PRICE_LIST created")
+            update_price_list(connection)
+        else:
+            print("   Table OCI_PRICE_LIST exist")
+
+        cursor.close()
+
+    except cx_Oracle.DatabaseError as e:
+        print("\nError manipulating database at check_database_table_price_list() - " + str(e) + "\n")
+        raise SystemExit
+
+    except Exception as e:
+        raise Exception("\nError manipulating database at check_database_table_price_list() - " + str(e))
+
+
 #########################################################################
 # Load Cost File
 ##########################################################################
@@ -784,6 +882,10 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
                 elif cost_productSku == "B88274" and product_Description == "":
                     product_Description = "Block Storage Classic"
                     cost_billingUnitReadable = "Gigabyte Storage Capacity per Month"
+
+                elif cost_productSku == "B89164" and product_Description == "":
+                    product_Description = "Oracle Security Monitoring and Compliance Edition"
+                    cost_billingUnitReadable = "100 Entities Per Hour"
 
                 # create array
                 row_data = (
@@ -1128,6 +1230,7 @@ def main_process():
         print("\nChecking Database Structure...")
         check_database_table_structure_usage(connection)
         check_database_table_structure_cost(connection)
+        check_database_table_structure_price_list(connection)
 
         ###############################
         # fetch max file id processed
@@ -1194,6 +1297,7 @@ def main_process():
         if cost_num > 0:
             update_cost_stats(connection)
             update_cost_reference(connection)
+            update_price_list(connection)
 
         # Close Connection
         connection.close()

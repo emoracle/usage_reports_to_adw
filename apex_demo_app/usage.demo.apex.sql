@@ -28,17 +28,17 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   14:56 Thursday May 7, 2020
+--   Date and Time:   16:55 Tuesday May 12, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                      8
---       Items:                   69
---       Computations:            13
---       Processes:                4
---       Regions:                 52
---       Buttons:                  5
---       Dynamic Actions:         27
+--     Pages:                      9
+--       Items:                   70
+--       Computations:            14
+--       Processes:                5
+--       Regions:                 55
+--       Buttons:                  6
+--       Dynamic Actions:         28
 --     Shared Components:
 --       Logic:
 --         App Settings:           1
@@ -105,7 +105,7 @@ wwv_flow_api.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'Release 20.05.11'
+,p_flow_version=>'Release 20.05.18'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200507123855'
+,p_last_upd_yyyymmddhh24miss=>'20200512165236'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -174,10 +174,18 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_for_pages=>'5'
 );
 wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(16371791258522236)
+,p_list_item_display_sequence=>80
+,p_list_item_link_text=>'Rate Card'
+,p_list_item_link_target=>'f?p=&APP_ID.:7:&SESSION.::&DEBUG.'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'7'
+);
+wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(12630315850041592)
-,p_list_item_display_sequence=>70
+,p_list_item_display_sequence=>90
 ,p_list_item_link_text=>'Data Statistics'
-,p_list_item_link_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.::::'
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'6'
 );
@@ -21401,6 +21409,413 @@ wwv_flow_api.create_page_item(
 ,p_source_type=>'QUERY'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_attribute_01=>'Y'
+);
+end;
+/
+prompt --application/pages/page_00007
+begin
+wwv_flow_api.create_page(
+ p_id=>7
+,p_user_interface_id=>wwv_flow_api.id(9843694399688199)
+,p_name=>'Rate Card'
+,p_step_title=>'Rate Card'
+,p_autocomplete_on_off=>'OFF'
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'.a-IRR-table tr td[headers*="rep_col_grey"]',
+'{',
+'    background-color: #efffff;',
+'}',
+'',
+'#P5_COST_DISPLAY {',
+'  background-color: #F5FBB4; font-weight: bold; font-size: 15px;',
+'}',
+'#P5_REPORT_GROUP { background-color: #F5FBB4; }',
+'#P5_INFO_DISPLAY {',
+'  background-color: #FfFff0; font-size: 12px;',
+'}'))
+,p_page_template_options=>'#DEFAULT#'
+,p_last_updated_by=>'ADIZOHAR'
+,p_last_upd_yyyymmddhh24miss=>'20200512164940'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(72369311697812384)
+,p_plug_name=>'Filter'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--accent12:t-Region--scrollBody:t-Form--noPadding:margin-top-none:margin-bottom-md:margin-left-none:margin-right-none'
+,p_plug_template=>wwv_flow_api.id(9765042323688020)
+,p_plug_display_sequence=>10
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_grid_column_span=>12
+,p_plug_display_point=>'BODY'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(83161602120160340)
+,p_plug_name=>'ShowGraphs'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(9765042323688020)
+,p_plug_display_sequence=>40
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_point=>'BODY'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(61791178689852192)
+,p_plug_name=>'Rate Card Report'
+,p_parent_plug_id=>wwv_flow_api.id(83161602120160340)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(9763915989688019)
+,p_plug_display_sequence=>60
+,p_plug_display_point=>'BODY'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'	TENANT_NAME               TENANT,',
+'    COST_PRODUCT_SKU          SKU,',
+'    PRD_DESCRIPTION           PRODUCT,',
+'    COST_CURRENCY_CODE        CURRENCY,',
+'    COST_UNIT_PRICE           COST_PRICE,',
+'    COST_LAST_UPDATE,',
+'	RATE_DESCRIPTION,',
+'    RATE_PAYGO_PRICE          RATE_PAYGO,',
+'	CASE WHEN RATE_PAYGO_PRICE > 0 AND RATE_PAYGO_PRICE IS NOT NULL and COST_UNIT_PRICE > 0 THEN',
+'	    ROUND((RATE_PAYGO_PRICE - COST_UNIT_PRICE )/RATE_PAYGO_PRICE * 100,1)',
+'	ELSE NULL END PCT_PAYGO,',
+'    ROUND(RATE_MONTHLY_FLEX_PRICE,4) RATE_MONTHLY,',
+'	CASE WHEN RATE_MONTHLY_FLEX_PRICE > 0  AND RATE_MONTHLY_FLEX_PRICE IS NOT NULL and COST_UNIT_PRICE>0 THEN',
+'	    ROUND((RATE_MONTHLY_FLEX_PRICE - COST_UNIT_PRICE )/RATE_MONTHLY_FLEX_PRICE * 100,1)',
+'	ELSE NULL END PCT_MONTH,',
+'	RATE_UPDATE_DATE',
+'FROM',
+'    OCI_PRICE_LIST',
+'where tenant_name=:P7_TENANT_NAME',
+'order by cost_product_sku;'))
+,p_plug_source_type=>'NATIVE_IR'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_prn_content_disposition=>'ATTACHMENT'
+,p_prn_document_header=>'APEX'
+,p_prn_units=>'INCHES'
+,p_prn_paper_size=>'LETTER'
+,p_prn_width=>8.5
+,p_prn_height=>11
+,p_prn_orientation=>'HORIZONTAL'
+,p_prn_page_header_font_color=>'#000000'
+,p_prn_page_header_font_family=>'Helvetica'
+,p_prn_page_header_font_weight=>'normal'
+,p_prn_page_header_font_size=>'12'
+,p_prn_page_footer_font_color=>'#000000'
+,p_prn_page_footer_font_family=>'Helvetica'
+,p_prn_page_footer_font_weight=>'normal'
+,p_prn_page_footer_font_size=>'12'
+,p_prn_header_bg_color=>'#9bafde'
+,p_prn_header_font_color=>'#000000'
+,p_prn_header_font_family=>'Helvetica'
+,p_prn_header_font_weight=>'normal'
+,p_prn_header_font_size=>'10'
+,p_prn_body_bg_color=>'#efefef'
+,p_prn_body_font_color=>'#000000'
+,p_prn_body_font_family=>'Helvetica'
+,p_prn_body_font_weight=>'normal'
+,p_prn_body_font_size=>'10'
+,p_prn_border_width=>.5
+,p_prn_page_header_alignment=>'CENTER'
+,p_prn_page_footer_alignment=>'CENTER'
+);
+wwv_flow_api.create_worksheet(
+ p_id=>wwv_flow_api.id(16358400984490309)
+,p_max_row_count=>'1000000'
+,p_show_nulls_as=>'-'
+,p_pagination_type=>'ROWS_X_TO_Y'
+,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_report_list_mode=>'TABS'
+,p_show_detail_link=>'N'
+,p_show_notify=>'Y'
+,p_download_formats=>'CSV:HTML:EMAIL:XLS:PDF:RTF'
+,p_owner=>'ADIZOHAR'
+,p_internal_uid=>16358400984490309
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16358519224490310)
+,p_db_column_name=>'TENANT'
+,p_display_order=>10
+,p_column_identifier=>'A'
+,p_column_label=>'Tenant'
+,p_column_type=>'STRING'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16358680829490311)
+,p_db_column_name=>'SKU'
+,p_display_order=>20
+,p_column_identifier=>'B'
+,p_column_label=>'Sku'
+,p_column_type=>'STRING'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16358753197490312)
+,p_db_column_name=>'PRODUCT'
+,p_display_order=>30
+,p_column_identifier=>'C'
+,p_column_label=>'Product'
+,p_column_html_expression=>'<span style="white-space:nowrap;">#PRODUCT#</span>'
+,p_column_type=>'STRING'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16358884845490313)
+,p_db_column_name=>'CURRENCY'
+,p_display_order=>40
+,p_column_identifier=>'D'
+,p_column_label=>'Currency'
+,p_column_type=>'STRING'
+,p_column_alignment=>'CENTER'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16358959661490314)
+,p_db_column_name=>'COST_PRICE'
+,p_display_order=>50
+,p_column_identifier=>'E'
+,p_column_label=>'Cost Price'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G990D0000'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16359088388490315)
+,p_db_column_name=>'COST_LAST_UPDATE'
+,p_display_order=>60
+,p_column_identifier=>'F'
+,p_column_label=>'Cost Last Update'
+,p_column_html_expression=>'<span style="white-space:nowrap;">#COST_LAST_UPDATE#</span>'
+,p_column_type=>'DATE'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'DD-MON-YYYY HH24:MI'
+,p_tz_dependent=>'N'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16359157348490316)
+,p_db_column_name=>'RATE_DESCRIPTION'
+,p_display_order=>70
+,p_column_identifier=>'G'
+,p_column_label=>'Rate Full Description'
+,p_column_html_expression=>'<span style="white-space:nowrap;">#RATE_DESCRIPTION#</span>'
+,p_column_type=>'STRING'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16359237070490317)
+,p_db_column_name=>'RATE_PAYGO'
+,p_display_order=>80
+,p_column_identifier=>'H'
+,p_column_label=>'Rate PayGo'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G990D0000'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16359398402490318)
+,p_db_column_name=>'PCT_PAYGO'
+,p_display_order=>90
+,p_column_identifier=>'I'
+,p_column_label=>'% PayGo'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16359449849490319)
+,p_db_column_name=>'RATE_MONTHLY'
+,p_display_order=>100
+,p_column_identifier=>'J'
+,p_column_label=>'Rate Monthly'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G990D0000'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16359539927490320)
+,p_db_column_name=>'PCT_MONTH'
+,p_display_order=>110
+,p_column_identifier=>'K'
+,p_column_label=>'% Month'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G990D00'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(16359640418490321)
+,p_db_column_name=>'RATE_UPDATE_DATE'
+,p_display_order=>120
+,p_column_identifier=>'L'
+,p_column_label=>'Rate Update Date'
+,p_column_html_expression=>'<span style="white-space:nowrap;">#RATE_UPDATE_DATE#</span>'
+,p_column_type=>'DATE'
+,p_column_alignment=>'CENTER'
+,p_format_mask=>'DD-MON-YYYY HH24:MI'
+,p_tz_dependent=>'N'
+);
+wwv_flow_api.create_worksheet_rpt(
+ p_id=>wwv_flow_api.id(16392788699988040)
+,p_application_user=>'APXWS_DEFAULT'
+,p_report_seq=>10
+,p_report_alias=>'163928'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'SKU:PRODUCT:CURRENCY:COST_PRICE:RATE_DESCRIPTION:RATE_PAYGO:PCT_PAYGO:RATE_MONTHLY:PCT_MONTH:RATE_UPDATE_DATE:'
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(16359737100490322)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_api.id(72369311697812384)
+,p_button_name=>'P7_QUERY_RATE'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--primary:t-Button--iconRight:t-Button--stretch:t-Button--gapTop'
+,p_button_template_id=>wwv_flow_api.id(9821219757688096)
+,p_button_image_alt=>'Update Rates using API (Can take a min)'
+,p_button_position=>'BODY'
+,p_grid_new_row=>'N'
+,p_grid_new_column=>'Y'
+,p_grid_column_span=>2
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(16372411599522248)
+,p_name=>'P7_TENANT_NAME'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_api.id(72369311697812384)
+,p_prompt=>'Tenant Name'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_lov=>'select distinct tenant_name o, tenant_name r from oci_cost order by 1'
+,p_lov_display_null=>'YES'
+,p_lov_null_text=>'Please Choose...'
+,p_cHeight=>1
+,p_colspan=>2
+,p_field_template=>wwv_flow_api.id(9820028477688087)
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'NO'
+,p_attribute_01=>'SUBMIT'
+,p_attribute_03=>'Y'
+);
+wwv_flow_api.create_page_computation(
+ p_id=>wwv_flow_api.id(16378387657522263)
+,p_computation_sequence=>10
+,p_computation_item=>'P7_TENANT_NAME'
+,p_computation_point=>'AFTER_HEADER'
+,p_computation_type=>'QUERY'
+,p_computation=>'select tenant_name from oci_cost where rownum=1'
+,p_compute_when=>'P7_TENANT_NAME'
+,p_compute_when_type=>'ITEM_IS_NULL'
+);
+wwv_flow_api.create_page_da_event(
+ p_id=>wwv_flow_api.id(16378604995522264)
+,p_name=>'ShowGraphsOrNot'
+,p_event_sequence=>10
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P7_ROWS'
+,p_condition_element=>'P7_ROWS'
+,p_triggering_condition_type=>'GREATER_THAN'
+,p_triggering_expression=>'0'
+,p_bind_type=>'bind'
+,p_bind_event_type=>'change'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(16379183002522265)
+,p_event_id=>wwv_flow_api.id(16378604995522264)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(83161602120160340)
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(16379612138522266)
+,p_event_id=>wwv_flow_api.id(16378604995522264)
+,p_event_result=>'FALSE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(83161602120160340)
+);
+wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(16359852724490323)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'P7_UPDATE_RATES'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'     v_json clob;',
+'     v_rate_description varchar2(1000);',
+'     v_rate_paygo       number;',
+'     v_rate_monthly     number;',
+'     cursor cost is select TENANT_NAME, COST_PRODUCT_SKU,COST_CURRENCY_CODE,RATE_DESCRIPTION,RATE_PAYGO_PRICE,RATE_MONTHLY_FLEX_PRICE,RATE_UPDATE_DATE from OCI_PRICE_LIST where tenant_name=:P7_TENANT_NAME ;',
+'',
+'    ---------------------------------------------------------------------------------------------',
+'    ---- function to retrieve SKU cost',
+'    ---------------------------------------------------------------------------------------------',
+'    function fn_price_list_json(p_sku varchar2, p_currency_code varchar2)',
+'        return clob',
+'    as',
+'        json_return clob;',
+'    begin',
+'        apex_web_service.g_request_headers(1).name  := ''user-agent'';',
+'        apex_web_service.g_request_headers(1).value := ''mozilla/4.0'';',
+'        apex_web_service.g_request_headers(2).name  := ''X-Oracle-Accept-CurrencyCode'';',
+'        apex_web_service.g_request_headers(2).value := p_currency_code;',
+'        json_return := APEX_WEB_SERVICE.MAKE_REST_REQUEST(p_url=> ''https://itra.oraclecloud.com/itas/.anon/myservices/api/v1/products?partNumber=''||p_sku,p_http_method =>''GET'');',
+'        return json_return;',
+'    end;',
+'',
+'---------------------------------------',
+'-- procedure to query the database',
+'---------------------------------------',
+'begin',
+'   for cost_loop in cost',
+'   loop',
+'       v_rate_paygo:=0;',
+'       v_rate_monthly:=0;',
+'       v_rate_description:='''';',
+'       v_json:=fn_price_list_json(cost_loop.cost_product_sku, cost_loop.cost_currency_code);',
+'',
+'       for json_loop in',
+'       (',
+'            SELECT jt.* FROM (select v_json as rtn from dual),',
+'            JSON_TABLE',
+'            (',
+'                rtn,',
+'                ''$''',
+'                     COLUMNS',
+'                     (',
+'                        partNumber   varchar2(500  char) path ''$.items.partNumber'',',
+'                        displayName  varchar2(1000 char) path ''$.items.displayName'',',
+'                        currencyCode varchar2(5    char) path ''$.items.currencyCode'',',
+'                        nested path ''$.items.prices[*]''',
+'                        columns(model varchar2(500 char) path ''$.model'',value number path ''$.value'')',
+'                     )',
+'            ) jt',
+'        )',
+'        loop',
+'            v_rate_description:=json_loop.displayName;',
+'            if json_loop.model=''PAY_AS_YOU_GO''',
+'            then',
+'                v_rate_paygo:=json_loop.value;',
+'            elsif json_loop.model=''MONTHLY_COMMIT''',
+'            then',
+'                v_rate_monthly:=json_loop.value;',
+'            end if;',
+'        end loop;',
+'',
+'        update OCI_PRICE_LIST',
+'        set RATE_DESCRIPTION=v_rate_description, RATE_PAYGO_PRICE=v_rate_paygo, RATE_MONTHLY_FLEX_PRICE=v_rate_monthly, RATE_UPDATE_DATE=sysdate',
+'        where tenant_name=cost_loop.tenant_name and COST_PRODUCT_SKU=cost_loop.COST_PRODUCT_SKU ;',
+'',
+'    end loop;',
+'    commit;',
+'end;'))
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_api.id(16359737100490322)
+,p_process_success_message=>'Update Rates Succeed for Tenant &P7_TENANT_NAME.'
 );
 end;
 /
