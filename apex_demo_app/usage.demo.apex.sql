@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   17:33 Tuesday May 12, 2020
+--   Date and Time:   18:22 Tuesday May 12, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512173227'
+,p_last_upd_yyyymmddhh24miss=>'20200512182149'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -21433,7 +21433,7 @@ wwv_flow_api.create_page(
 ''))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512173227'
+,p_last_upd_yyyymmddhh24miss=>'20200512182149'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(72369311697812384)
@@ -21606,7 +21606,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'RATE_PAYGO'
 ,p_display_order=>80
 ,p_column_identifier=>'H'
-,p_column_label=>'Rate PayGo'
+,p_column_label=>'Public Rate PayGo'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D0000'
@@ -21626,7 +21626,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'RATE_MONTHLY'
 ,p_display_order=>100
 ,p_column_identifier=>'J'
-,p_column_label=>'Rate Monthly Flex'
+,p_column_label=>'Public Rate Monthly Flex'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D0000'
@@ -21662,7 +21662,7 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_report_alias=>'163928'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'SKU:PRODUCT:CURRENCY:COST_PRICE:RATE_DESCRIPTION:RATE_PAYGO:PCT_PAYGO:RATE_MONTHLY:PCT_MONTH:RATE_UPDATE_DATE:'
+,p_report_columns=>'SKU:PRODUCT:CURRENCY:COST_PRICE:RATE_PAYGO:PCT_PAYGO:RATE_MONTHLY:PCT_MONTH:RATE_DESCRIPTION:RATE_UPDATE_DATE:'
 );
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(16359737100490322)
