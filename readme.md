@@ -6,14 +6,14 @@ Authentication to OCI by User or instance principals.
 
 **Developed by Adi Zohar, Feb 2020**
 
+** DISCLAIMER – This is not an official Oracle application **
+
 ## Main Features
 - Usage Current State
 - Usage Over Time
 - Cost Analysis
 - Cost Over Time
 - Rate Card
-
-** DISCLAIMER – This is not an official Oracle application **
 
 ## Cost Reports
 ![](img/screen_4.png)
