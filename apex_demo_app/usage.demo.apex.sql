@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   16:55 Tuesday May 12, 2020
+--   Date and Time:   17:06 Tuesday May 12, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512165236'
+,p_last_upd_yyyymmddhh24miss=>'20200512170531'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -21435,7 +21435,7 @@ wwv_flow_api.create_page(
 '}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512164940'
+,p_last_upd_yyyymmddhh24miss=>'20200512170531'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(72369311697812384)
@@ -21627,7 +21627,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'RATE_MONTHLY'
 ,p_display_order=>100
 ,p_column_identifier=>'J'
-,p_column_label=>'Rate Monthly'
+,p_column_label=>'Rate Monthly Flex'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D0000'
@@ -21637,7 +21637,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'PCT_MONTH'
 ,p_display_order=>110
 ,p_column_identifier=>'K'
-,p_column_label=>'% Month'
+,p_column_label=>'% Month Flex'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D00'
@@ -21773,8 +21773,8 @@ wwv_flow_api.create_page_process(
 'begin',
 '   for cost_loop in cost',
 '   loop',
-'       v_rate_paygo:=0;',
-'       v_rate_monthly:=0;',
+'       v_rate_paygo:=null;',
+'       v_rate_monthly:=null;',
 '       v_rate_description:='''';',
 '       v_json:=fn_price_list_json(cost_loop.cost_product_sku, cost_loop.cost_currency_code);',
 '',
