@@ -47,12 +47,16 @@ Please check step by step guide - [step_by_step_installation.md](step_by_step_in
 - OCI_COST_STATS - Summary Stats of the Cost Report for quick query if only filtered by tenant and date
 - OCI_COST_TAG_KEYS - Tag keys of the cost reports
 - OCI_COST_REFERENCE - Reference table of the cost filter keys - SERVICE, REGION, COMPARTMENT, PRODUCT, SUBSCRIPTION
+- OCI_PRICE_LIST - Hold the price list and the cost per product 
 
 ## OCI APIs Used:
 - IdentityClient.list_compartments - Policy COMPARTMENT_INSPECT
 - IdentityClient.get_tenancy       - Policy TENANCY_INSPECT
 - ObjectStorageClient.list_objects - Policy OBJECT_INSPECT
 - ObjectStorageClient.get_object   - Policy OBJECT_READ
+
+## REST API Used by APEX:
+- https://itra.oraclecloud.com/itas/.anon/myservices/api/v1/products?partNumber=XX
 
 ## Python 3 OCI SDK
 
