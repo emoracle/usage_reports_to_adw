@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   17:06 Tuesday May 12, 2020
+--   Date and Time:   17:12 Tuesday May 12, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -68,7 +68,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 --       Globalization:
 --       Reports:
 --       E-Mail:
---     Supporting Objects:  Excluded
+--     Supporting Objects:  Included
 --   Version:         19.2.0.00.18
 --   Instance ID:     9710412995014033
 --
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512170531'
+,p_last_upd_yyyymmddhh24miss=>'20200512171218'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -21425,17 +21425,15 @@ wwv_flow_api.create_page(
 '{',
 '    background-color: #efffff;',
 '}',
-'',
-'#P5_COST_DISPLAY {',
-'  background-color: #F5FBB4; font-weight: bold; font-size: 15px;',
+'.a-IRR-table tr td[headers*="rep_col_blue"]',
+'{',
+'    background-color: #ffefff;',
 '}',
-'#P5_REPORT_GROUP { background-color: #F5FBB4; }',
-'#P5_INFO_DISPLAY {',
-'  background-color: #FfFff0; font-size: 12px;',
-'}'))
+'',
+''))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512170531'
+,p_last_upd_yyyymmddhh24miss=>'20200512171218'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(72369311697812384)
@@ -21580,6 +21578,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D0000'
+,p_static_id=>'rep_col_grey'
 );
 wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(16359088388490315)
@@ -21631,6 +21630,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D0000'
+,p_static_id=>'rep_col_grey'
 );
 wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(16359539927490320)
@@ -21641,6 +21641,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D00'
+,p_static_id=>'rep_col_blue'
 );
 wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(16359640418490321)
@@ -21986,6 +21987,23 @@ wwv_flow_api.create_page_process(
 ':P9999_USERNAME := apex_authentication.get_login_username_cookie;',
 ':P9999_REMEMBER := case when :P9999_USERNAME is not null then ''Y'' end;'))
 );
+end;
+/
+prompt --application/deployment/definition
+begin
+wwv_flow_api.create_install(
+ p_id=>wwv_flow_api.id(10020398401823178)
+);
+end;
+/
+prompt --application/deployment/checks
+begin
+null;
+end;
+/
+prompt --application/deployment/buildoptions
+begin
+null;
 end;
 /
 prompt --application/end_environment
