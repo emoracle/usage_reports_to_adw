@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   02:51 Thursday May 14, 2020
+--   Date and Time:   12:57 Thursday May 14, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200514024948'
+,p_last_upd_yyyymmddhh24miss=>'20200514125539'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -12821,6 +12821,11 @@ wwv_flow_api.create_page(
 '    background-color: #efffff;',
 '}',
 '',
+'.a-IRR-table tr td[headers*="rep_col_pink"]',
+'{',
+'    background-color: #ffefff;',
+'}',
+'',
 '#P4_COST_DISPLAY {',
 '  background-color: #F5FBB4; font-weight: bold; font-size: 14px;',
 '}',
@@ -12833,7 +12838,7 @@ wwv_flow_api.create_page(
 '#P4_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 13px;}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200514024948'
+,p_last_upd_yyyymmddhh24miss=>'20200514125539'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(10816553122165737)
@@ -13877,7 +13882,7 @@ wwv_flow_api.create_page_plug(
 '(',
 '    select ',
 '        a.tenant_name,',
-'        a.COST_PRODUCT_SKU || '' '' || replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' '','''') as PRODUCT,',
+'        a.COST_PRODUCT_SKU || '' '' || replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '','''') as PRODUCT,',
 '        a.COST_PRODUCT_SKU,',
 '        min(COST_BILLING_UNIT) COST_BILLING_UNIT,',
 '        max(COST_UNIT_PRICE) RATE,',
@@ -13910,7 +13915,7 @@ wwv_flow_api.create_page_plug(
 '        and COST_MY_COST<>0',
 '        and :P4_REPORT_SELECTOR = ''Cost Report''',
 '    group by ',
-'        a.tenant_name,a.COST_PRODUCT_SKU , replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' '','''')',
+'        a.tenant_name,a.COST_PRODUCT_SKU , replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '','''')',
 ')',
 'select ',
 '    PRODUCT,',
@@ -13919,6 +13924,10 @@ wwv_flow_api.create_page_plug(
 '	CASE WHEN RATE_MONTHLY_FLEX_PRICE > 0  AND RATE_MONTHLY_FLEX_PRICE IS NOT NULL and RATE>0 THEN',
 '	    ROUND((RATE_MONTHLY_FLEX_PRICE - RATE )/RATE_MONTHLY_FLEX_PRICE * 100,1)',
 '	ELSE NULL END PCT_MONTH,',
+'    case when RATE_PAYGO_PRICE = 0 then null else RATE_PAYGO_PRICE end PUBLIC_PAYGO_RATE,',
+'	CASE WHEN RATE_PAYGO_PRICE > 0  AND RATE_PAYGO_PRICE IS NOT NULL and RATE>0 THEN',
+'	    ROUND((RATE_PAYGO_PRICE - RATE )/RATE_PAYGO_PRICE * 100,1)',
+'	ELSE NULL END PCT_PAYGO,',
 '    RATE,',
 '    CURRENCY,',
 '    SINGLE_QUANTITY,',
@@ -14014,10 +14023,11 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'PCT_MONTH'
 ,p_display_order=>40
 ,p_column_identifier=>'M'
-,p_column_label=>'Pct Discount'
+,p_column_label=>'% Discount MonFlex'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D0'
+,p_static_id=>'rep_col_pink'
 );
 wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(11934736538191640)
@@ -14109,6 +14119,26 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D00'
 );
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(14188462327270025)
+,p_db_column_name=>'PUBLIC_PAYGO_RATE'
+,p_display_order=>140
+,p_column_identifier=>'N'
+,p_column_label=>'Public PayGo Rate'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G990D0000'
+);
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(14188587079270026)
+,p_db_column_name=>'PCT_PAYGO'
+,p_display_order=>150
+,p_column_identifier=>'O'
+,p_column_label=>'% DIscount Vs Paygo'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G990D0'
+);
 wwv_flow_api.create_worksheet_rpt(
  p_id=>wwv_flow_api.id(12264955888332662)
 ,p_application_user=>'APXWS_DEFAULT'
@@ -14116,7 +14146,18 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_report_alias=>'122650'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'PRODUCT:CURRENCY:COST_BILLING_UNIT:PUBLIC_RATE:PCT_MONTH:RATE:SINGLE_QUANTITY:OVERAGE_COST:USAGE_COST:ESTIMATE_MONTH_31:ESTIMATE_YEAR:'
+,p_report_columns=>'PRODUCT:COST_BILLING_UNIT:CURRENCY:PUBLIC_RATE:PCT_MONTH:RATE:SINGLE_QUANTITY:OVERAGE_COST:USAGE_COST:ESTIMATE_MONTH_31:ESTIMATE_YEAR:'
+,p_sum_columns_on_break=>'OVERAGE_COST:USAGE_COST:ESTIMATE_MONTH_31:ESTIMATE_YEAR'
+);
+wwv_flow_api.create_worksheet_rpt(
+ p_id=>wwv_flow_api.id(16442242263079381)
+,p_application_user=>'APXWS_ALTERNATIVE'
+,p_name=>'Compact'
+,p_report_seq=>10
+,p_report_alias=>'164423'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'PRODUCT:CURRENCY:PCT_MONTH:RATE:SINGLE_QUANTITY:OVERAGE_COST:USAGE_COST:ESTIMATE_MONTH_31:ESTIMATE_YEAR:'
 ,p_sum_columns_on_break=>'OVERAGE_COST:USAGE_COST:ESTIMATE_MONTH_31:ESTIMATE_YEAR'
 );
 wwv_flow_api.create_page_plug(
@@ -14641,6 +14682,9 @@ wwv_flow_api.create_page_item(
 ,p_attribute_01=>'NONE'
 ,p_attribute_02=>'N'
 );
+end;
+/
+begin
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(11706169664773195)
 ,p_name=>'P4_TAG_DATA'
@@ -14681,9 +14725,6 @@ wwv_flow_api.create_page_item(
 ,p_attribute_02=>'VALUE'
 ,p_attribute_04=>'Y'
 );
-end;
-/
-begin
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(11932857596191621)
 ,p_name=>'P4_COST'
@@ -22077,7 +22118,7 @@ wwv_flow_api.create_page(
 ''))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200514014931'
+,p_last_upd_yyyymmddhh24miss=>'20200514125242'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(72369311697812384)
@@ -22117,7 +22158,7 @@ wwv_flow_api.create_page_plug(
 'SELECT',
 '	TENANT_NAME               TENANT,',
 '    COST_PRODUCT_SKU          SKU,',
-'    PRD_DESCRIPTION           PRODUCT,',
+'    replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '','''')  PRODUCT,',
 '    COST_CURRENCY_CODE        CURRENCY,',
 '    COST_UNIT_PRICE           COST_PRICE,',
 '    COST_LAST_UPDATE,',
@@ -22264,13 +22305,14 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D00'
+,p_static_id=>'rep_col_blue'
 );
 wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(16359449849490319)
 ,p_db_column_name=>'RATE_MONTHLY'
 ,p_display_order=>100
 ,p_column_identifier=>'J'
-,p_column_label=>'Public Rate Monthly Flex'
+,p_column_label=>'Public Rate MonFlex'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D0000'
@@ -22281,7 +22323,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'PCT_MONTH'
 ,p_display_order=>110
 ,p_column_identifier=>'K'
-,p_column_label=>'% Discount Monthly Flex'
+,p_column_label=>'% Discount MonFlex'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D00'
@@ -22306,7 +22348,27 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_report_alias=>'163928'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'SKU:PRODUCT:CURRENCY:COST_PRICE:RATE_PAYGO:PCT_PAYGO:RATE_MONTHLY:PCT_MONTH:RATE_DESCRIPTION:RATE_UPDATE_DATE:'
+,p_report_columns=>'SKU:PRODUCT:CURRENCY:COST_PRICE:PCT_MONTH:RATE_MONTHLY:RATE_DESCRIPTION:RATE_UPDATE_DATE:'
+);
+wwv_flow_api.create_worksheet_rpt(
+ p_id=>wwv_flow_api.id(16440462414039910)
+,p_application_user=>'APXWS_ALTERNATIVE'
+,p_name=>'PayGo'
+,p_report_seq=>10
+,p_report_alias=>'164405'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'SKU:PRODUCT:CURRENCY:COST_PRICE:RATE_PAYGO:PCT_PAYGO:RATE_DESCRIPTION:RATE_UPDATE_DATE:'
+);
+wwv_flow_api.create_worksheet_rpt(
+ p_id=>wwv_flow_api.id(16440945673042259)
+,p_application_user=>'APXWS_ALTERNATIVE'
+,p_name=>'Monthly Flex'
+,p_report_seq=>10
+,p_report_alias=>'164410'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'SKU:PRODUCT:CURRENCY:COST_PRICE:PCT_MONTH:RATE_MONTHLY:RATE_DESCRIPTION:RATE_UPDATE_DATE:'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(16372411599522248)
