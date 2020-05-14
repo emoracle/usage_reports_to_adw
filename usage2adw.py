@@ -44,6 +44,9 @@
 # - ObjectStorageClient.list_objects          - Policy OBJECT_INSPECT
 # - ObjectStorageClient.get_object            - Policy OBJECT_READ
 #
+# Meter API for Public Rate:
+# - https://itra.oraclecloud.com/itas/.anon/myservices/api/v1/products?partNumber=XX
+#
 ##########################################################################
 # Tables used:
 # - OCI_USAGE - Raw data of the usage reports

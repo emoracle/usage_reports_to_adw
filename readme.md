@@ -65,7 +65,7 @@ Please check step by step guide - [step_by_step_installation.md](step_by_step_in
 - ObjectStorageClient.list_objects - Policy OBJECT_INSPECT
 - ObjectStorageClient.get_object   - Policy OBJECT_READ
 
-## REST API Used by APEX:
+## REST API Used:
 - https://itra.oraclecloud.com/itas/.anon/myservices/api/v1/products?partNumber=XX
 
 ## Python 3 OCI SDK
