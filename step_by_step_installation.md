@@ -338,20 +338,6 @@ Download [usage.demo.apex.sql](apex_demo_app/usage.demo.apex.sql) from github "a
     Follow section 16 - Import APEX application
 ```
 
-## 20. Add Network ACL if installed on non Autonomous database
-Incase you load the data to non Autonomous Database, you will need to create Network ACL, if not you will get ORA-24247: network access denied by access control list (ACL)
-
-```
--- Assign ACL
-exec dbms_network_acl_admin.create_acl   (acl => 'allow_api_call_from_apex.xml', description => 'HTTP Access', principal => 'USAGE', is_grant => true, privilege => 'connect', start_date => null, end_date => null);
-exec dbms_network_acl_admin.add_privilege(acl => 'allow_api_call_from_apex.xml', principal => 'USAGE', is_grant  => true, privilege => 'resolve');
-exec dbms_network_acl_admin.assign_acl   (acl => 'allow_api_call_from_apex.xml', host => 'itra.oraclecloud.com', lower_port => 443, upper_port => 443);
-
--- Check ACL
-SELECT DECODE(dbms_network_acl_admin.check_privilege('allow_api_call_from_apex.xml', 'USAGE', 'resolve'), 1, 'GRANTED', 0, 'DENIED', NULL) PRIVILEGE FROM DUAL;
-SELECT DECODE(dbms_network_acl_admin.check_privilege('allow_api_call_from_apex.xml', 'USAGE', 'connect'), 1, 'GRANTED', 0, 'DENIED', NULL) PRIVILEGE FROM DUAL;
-```
-
 ## License
 
 Copyright (c) 2016, 2020, Oracle and/or its affiliates.  All rights reserved.

@@ -63,6 +63,8 @@ import gzip
 import os
 import csv
 import cx_Oracle
+import requests
+
 
 version = "20.05.18"
 usage_report_namespace = "bling"
@@ -540,6 +542,83 @@ def update_cost_reference(connection):
 
 
 ##########################################################################
+# update_public_rates
+##########################################################################
+def update_public_rates(connection, tenant_name):
+    try:
+        # open cursor
+        num_rows = 0
+        cursor = connection.cursor()
+        api_url = "https://itra.oraclecloud.com/itas/.anon/myservices/api/v1/products?partNumber="
+
+        print("\nMerging Public Rates into OCI_RATE_CARD...")
+
+        # retrieve the SKUS to query
+        sql = "select COST_PRODUCT_SKU, COST_CURRENCY_CODE from OCI_PRICE_LIST where tenant_name=:tenant_name"
+
+        cursor.execute(sql, {"tenant_name": tenant_name})
+        rows = cursor.fetchall()
+
+        if rows:
+            for row in rows:
+
+                rate_description = ""
+                rate_paygo_price = None
+                rate_monthly_flex_price = None
+
+                # Call API to fetch the data
+                cost_produdt_sku = str(row[0])
+                country_code = str(row[1])
+                resp = requests.get(api_url + cost_produdt_sku, headers={'X-Oracle-Accept-CurrencyCode': country_code})
+
+                if not resp:
+                    continue
+
+                for item in resp.json()['items']:
+                    rate_description = item["displayName"]
+                    for price in item['prices']:
+                        if price['model'] == 'PAY_AS_YOU_GO':
+                            rate_paygo_price = price['value']
+                        elif price['model'] == 'MONTHLY_COMMIT':
+                            rate_monthly_flex_price = price['value']
+
+                # update database
+                sql = "update OCI_PRICE_LIST set "
+                sql += "RATE_DESCRIPTION=:rate_description, "
+                sql += "RATE_PAYGO_PRICE=:rate_paygo, "
+                sql += "RATE_MONTHLY_FLEX_PRICE=:rate_monthly, "
+                sql += "RATE_UPDATE_DATE=sysdate "
+                sql += "where TENANT_NAME=:tenant_name and COST_PRODUCT_SKU=:cost_produdt_sku "
+
+                sql_variables = {
+                    "rate_description": rate_description,
+                    "rate_paygo": rate_paygo_price,
+                    "rate_monthly": rate_monthly_flex_price,
+                    "tenant_name": tenant_name,
+                    "cost_produdt_sku": cost_produdt_sku
+                }
+
+                cursor.execute(sql, sql_variables)
+                num_rows += 1
+
+            # Commit
+            connection.commit()
+
+        print("   Update Completed, " + str(num_rows) + " rows updated.")
+        cursor.close()
+
+    except cx_Oracle.DatabaseError as e:
+        print("\nError manipulating database at update_public_rates() - " + str(e) + "\n")
+        raise SystemExit
+
+    except requests.exceptions.ConnectionError as e:
+        print("\nError connecting to billing metering API at update_public_rates() - " + str(e))
+
+    except Exception as e:
+        raise Exception("\nError manipulating database at update_public_rates() - " + str(e))
+
+
+##########################################################################
 # update_usage_stats
 ##########################################################################
 def update_usage_stats(connection):
@@ -723,7 +802,7 @@ def check_database_table_structure_cost(connection):
 ##########################################################################
 # Check Table Structure Price List
 ##########################################################################
-def check_database_table_structure_price_list(connection):
+def check_database_table_structure_price_list(connection, tenant_name):
     try:
         # open cursor
         cursor = connection.cursor()
@@ -752,6 +831,7 @@ def check_database_table_structure_price_list(connection):
             cursor.execute(sql)
             print("   Table OCI_PRICE_LIST created")
             update_price_list(connection)
+            update_public_rates(connection, tenant_name)
         else:
             print("   Table OCI_PRICE_LIST exist")
 
@@ -886,6 +966,26 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
                 elif cost_productSku == "B89164" and product_Description == "":
                     product_Description = "Oracle Security Monitoring and Compliance Edition"
                     cost_billingUnitReadable = "100 Entities Per Hour"
+
+                elif cost_productSku == "B88269" and product_Description == "":
+                    product_Description = "Compute Classic"
+                    cost_billingUnitReadable = "OCPU Per Hour "
+
+                elif cost_productSku == "B88269" and product_Description == "":
+                    product_Description = "Compute Classic"
+                    cost_billingUnitReadable = "OCPU Per Hour"
+
+                elif cost_productSku == "B88275" and product_Description == "":
+                    product_Description = "Block Storage Classic - High I/O"
+                    cost_billingUnitReadable = "Gigabyte Storage Per Month"
+
+                elif cost_productSku == "B88283" and product_Description == "":
+                    product_Description = "Object Storage Classic - GET and all other Requests"
+                    cost_billingUnitReadable = "10,000 Requests Per Month"
+
+                elif cost_productSku == "B88284" and product_Description == "":
+                    product_Description = "Object Storage Classic - PUT, COPY, POST or LIST Requests"
+                    cost_billingUnitReadable = "10,000 Requests Per Month"
 
                 # create array
                 row_data = (
@@ -1230,7 +1330,7 @@ def main_process():
         print("\nChecking Database Structure...")
         check_database_table_structure_usage(connection)
         check_database_table_structure_cost(connection)
-        check_database_table_structure_price_list(connection)
+        check_database_table_structure_price_list(connection, tenancy.name)
 
         ###############################
         # fetch max file id processed
@@ -1297,7 +1397,8 @@ def main_process():
         if cost_num > 0:
             update_cost_stats(connection)
             update_cost_reference(connection)
-            update_price_list(connection)
+            update_price_list(connection, tenancy.name)
+            update_public_rates(connection, tenancy.name)
 
         # Close Connection
         connection.close()
