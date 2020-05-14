@@ -1397,7 +1397,7 @@ def main_process():
         if cost_num > 0:
             update_cost_stats(connection)
             update_cost_reference(connection)
-            update_price_list(connection, tenancy.name)
+            update_price_list(connection)
             update_public_rates(connection, tenancy.name)
 
         # Close Connection
