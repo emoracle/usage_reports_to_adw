@@ -264,9 +264,7 @@ Oracle Application Express (APEX) will be used for reporting.
    
 ## 16. Import APEX application
 
-Download [usage.demo.apex.sql](apex_demo_app/usage.demo.apex.sql) from github "apex_demo_app" folder
-
-You can press right click download for [this url] (https://raw.githubusercontent.com/oracle/oci-python-sdk/master/examples/usage_reports_to_adw/apex_demo_app/usage.demo.apex.sql)
+Right Click and Download [usage.demo.apex.sql](https://raw.githubusercontent.com/oracle/oci-python-sdk/master/examples/usage_reports_to_adw/apex_demo_app/usage.demo.apex.sql) from github "apex_demo_app" folder
 
 ```
    APEX Top Menu -> App Builder -> Import
