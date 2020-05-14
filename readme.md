@@ -76,6 +76,9 @@ Please follow Python Documentation - https://docs.python.org/3/using/index.html
 ### install oci SDK Packages:
 Please follow Oracle Python SDK Documentation - https://github.com/oracle/oci-python-sdk
 
+### install requests package:
+pip install requests or pip3 install requests
+
 ## Setup connectivity using Instance Principals
 
 ```  
