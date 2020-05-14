@@ -28,16 +28,16 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   18:22 Tuesday May 12, 2020
+--   Date and Time:   02:15 Thursday May 14, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                      9
 --       Items:                   70
 --       Computations:            14
---       Processes:                5
+--       Processes:                4
 --       Regions:                 55
---       Buttons:                  6
+--       Buttons:                  5
 --       Dynamic Actions:         28
 --     Shared Components:
 --       Logic:
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512182149'
+,p_last_upd_yyyymmddhh24miss=>'20200514014931'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -21433,7 +21433,7 @@ wwv_flow_api.create_page(
 ''))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200512182149'
+,p_last_upd_yyyymmddhh24miss=>'20200514014931'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(72369311697812384)
@@ -21637,7 +21637,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'PCT_MONTH'
 ,p_display_order=>110
 ,p_column_identifier=>'K'
-,p_column_label=>'% Discount Month Flex'
+,p_column_label=>'% Discount Monthly Flex'
 ,p_column_type=>'NUMBER'
 ,p_column_alignment=>'RIGHT'
 ,p_format_mask=>'999G999G999G999G990D00'
@@ -21663,20 +21663,6 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_report_columns=>'SKU:PRODUCT:CURRENCY:COST_PRICE:RATE_PAYGO:PCT_PAYGO:RATE_MONTHLY:PCT_MONTH:RATE_DESCRIPTION:RATE_UPDATE_DATE:'
-);
-wwv_flow_api.create_page_button(
- p_id=>wwv_flow_api.id(16359737100490322)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_api.id(72369311697812384)
-,p_button_name=>'P7_QUERY_RATE'
-,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#:t-Button--primary:t-Button--iconRight:t-Button--stretch:t-Button--gapTop'
-,p_button_template_id=>wwv_flow_api.id(9821219757688096)
-,p_button_image_alt=>'Update Rates using API (Can take a min)'
-,p_button_position=>'BODY'
-,p_grid_new_row=>'N'
-,p_grid_new_column=>'Y'
-,p_grid_column_span=>2
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(16372411599522248)
@@ -21737,86 +21723,6 @@ wwv_flow_api.create_page_da_action(
 ,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_api.id(83161602120160340)
-);
-wwv_flow_api.create_page_process(
- p_id=>wwv_flow_api.id(16359852724490323)
-,p_process_sequence=>10
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'P7_UPDATE_RATES'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'declare',
-'     v_json clob;',
-'     v_rate_description varchar2(1000);',
-'     v_rate_paygo       number;',
-'     v_rate_monthly     number;',
-'     cursor cost is select TENANT_NAME, COST_PRODUCT_SKU,COST_CURRENCY_CODE,RATE_DESCRIPTION,RATE_PAYGO_PRICE,RATE_MONTHLY_FLEX_PRICE,RATE_UPDATE_DATE from OCI_PRICE_LIST where tenant_name=:P7_TENANT_NAME ;',
-'',
-'    ---------------------------------------------------------------------------------------------',
-'    ---- function to retrieve SKU cost',
-'    ---------------------------------------------------------------------------------------------',
-'    function fn_price_list_json(p_sku varchar2, p_currency_code varchar2)',
-'        return clob',
-'    as',
-'        json_return clob;',
-'    begin',
-'        apex_web_service.g_request_headers(1).name  := ''user-agent'';',
-'        apex_web_service.g_request_headers(1).value := ''mozilla/4.0'';',
-'        apex_web_service.g_request_headers(2).name  := ''X-Oracle-Accept-CurrencyCode'';',
-'        apex_web_service.g_request_headers(2).value := p_currency_code;',
-'        json_return := APEX_WEB_SERVICE.MAKE_REST_REQUEST(p_url=> ''https://itra.oraclecloud.com/itas/.anon/myservices/api/v1/products?partNumber=''||p_sku,p_http_method =>''GET'');',
-'        return json_return;',
-'    end;',
-'',
-'---------------------------------------',
-'-- procedure to query the database',
-'---------------------------------------',
-'begin',
-'   for cost_loop in cost',
-'   loop',
-'       v_rate_paygo:=null;',
-'       v_rate_monthly:=null;',
-'       v_rate_description:='''';',
-'       v_json:=fn_price_list_json(cost_loop.cost_product_sku, cost_loop.cost_currency_code);',
-'',
-'       for json_loop in',
-'       (',
-'            SELECT jt.* FROM (select v_json as rtn from dual),',
-'            JSON_TABLE',
-'            (',
-'                rtn,',
-'                ''$''',
-'                     COLUMNS',
-'                     (',
-'                        partNumber   varchar2(500  char) path ''$.items.partNumber'',',
-'                        displayName  varchar2(1000 char) path ''$.items.displayName'',',
-'                        currencyCode varchar2(5    char) path ''$.items.currencyCode'',',
-'                        nested path ''$.items.prices[*]''',
-'                        columns(model varchar2(500 char) path ''$.model'',value number path ''$.value'')',
-'                     )',
-'            ) jt',
-'        )',
-'        loop',
-'            v_rate_description:=json_loop.displayName;',
-'            if json_loop.model=''PAY_AS_YOU_GO''',
-'            then',
-'                v_rate_paygo:=json_loop.value;',
-'            elsif json_loop.model=''MONTHLY_COMMIT''',
-'            then',
-'                v_rate_monthly:=json_loop.value;',
-'            end if;',
-'        end loop;',
-'',
-'        update OCI_PRICE_LIST',
-'        set RATE_DESCRIPTION=v_rate_description, RATE_PAYGO_PRICE=v_rate_paygo, RATE_MONTHLY_FLEX_PRICE=v_rate_monthly, RATE_UPDATE_DATE=sysdate',
-'        where tenant_name=cost_loop.tenant_name and COST_PRODUCT_SKU=cost_loop.COST_PRODUCT_SKU ;',
-'',
-'    end loop;',
-'    commit;',
-'end;'))
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_api.id(16359737100490322)
-,p_process_success_message=>'Update Rates Succeed for Tenant &P7_TENANT_NAME.'
 );
 end;
 /
