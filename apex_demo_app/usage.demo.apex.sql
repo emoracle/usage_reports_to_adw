@@ -28,7 +28,7 @@ prompt APPLICATION 100 - OCI Usage and Cost Report
 -- Application Export:
 --   Application:     100
 --   Name:            OCI Usage and Cost Report
---   Date and Time:   12:57 Thursday May 14, 2020
+--   Date and Time:   14:06 Thursday May 14, 2020
 --   Exported By:     ADIZOHAR
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'OCI Usage and Cost Report'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200514125539'
+,p_last_upd_yyyymmddhh24miss=>'20200514140612'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -15342,7 +15342,7 @@ wwv_flow_api.create_page(
 '#P5_REPORT_SELECTOR { background-color: #F5FBB4; font-weight: bold; font-size: 13px;}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_last_updated_by=>'ADIZOHAR'
-,p_last_upd_yyyymmddhh24miss=>'20200507123855'
+,p_last_upd_yyyymmddhh24miss=>'20200514140612'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(22846551592241693)
@@ -15397,7 +15397,7 @@ wwv_flow_api.create_report_region(
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT ',
 '	case ',
-'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'')',
+'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'')',
 '		when :P5_REPORT_GROUP = ''Region'' then prd_region',
 '		when :P5_REPORT_GROUP = ''Top Compartment'' then ',
 '			case ',
@@ -15436,7 +15436,7 @@ wwv_flow_api.create_report_region(
 '    :P5_REPORT_SELECTOR = ''Monthly Cost Report''',
 'GROUP BY ',
 '	case ',
-'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'')',
+'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'')',
 '		when :P5_REPORT_GROUP = ''Region'' then prd_region',
 '		when :P5_REPORT_GROUP = ''Top Compartment'' then ',
 '			case ',
@@ -15714,7 +15714,7 @@ wwv_flow_api.create_report_region(
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT ',
 '	case ',
-'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'')',
+'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'')',
 '		when :P5_REPORT_GROUP = ''Region'' then prd_region',
 '		when :P5_REPORT_GROUP = ''Top Compartment'' then ',
 '			case ',
@@ -15773,7 +15773,7 @@ wwv_flow_api.create_report_region(
 '',
 'GROUP BY ',
 '	case ',
-'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'')',
+'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'')',
 '		when :P5_REPORT_GROUP = ''Region'' then prd_region',
 '		when :P5_REPORT_GROUP = ''Top Compartment'' then ',
 '			case ',
@@ -16338,7 +16338,7 @@ wwv_flow_api.create_report_region(
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 ' SELECT ',
 '	case ',
-'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'')',
+'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'')',
 '		when :P5_REPORT_GROUP = ''Region'' then prd_region',
 '		when :P5_REPORT_GROUP = ''Top Compartment'' then ',
 '			case ',
@@ -16417,7 +16417,7 @@ wwv_flow_api.create_report_region(
 '    :P5_REPORT_SELECTOR = ''Weekly Cost Report''',
 'GROUP BY ',
 '	case ',
-'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'')',
+'		when :P5_REPORT_GROUP = ''Product'' or :P5_REPORT_GROUP is null then COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'')',
 '		when :P5_REPORT_GROUP = ''Region'' then prd_region',
 '		when :P5_REPORT_GROUP = ''Top Compartment'' then ',
 '			case ',
@@ -17227,7 +17227,7 @@ wwv_flow_api.create_report_region(
 'FROM ',
 '(',
 '	SELECT ',
-'		COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'') PRODUCT_NAME,',
+'		COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'') PRODUCT_NAME,',
 '		USAGE_INTERVAL_START,',
 '		case ',
 '			when COST_BILLING_UNIT like ''%HOURS%'' or PRD_DESCRIPTION like ''%Per Hour%'' then USG_BILLED_QUANTITY/24',
@@ -18535,7 +18535,7 @@ wwv_flow_api.create_report_region(
 'FROM ',
 '(',
 '	SELECT ',
-'		COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'') PRODUCT_NAME,',
+'		COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'') PRODUCT_NAME,',
 '		USAGE_INTERVAL_START,',
 '		USG_BILLED_QUANTITY',
 '	FROM',
@@ -19062,7 +19062,7 @@ wwv_flow_api.create_report_region(
 ,p_query_type=>'SQL'
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 ' SELECT ',
-'	COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'') as product_name,',
+'	COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'') as product_name,',
 '    sum(case when to_char(USAGE_INTERVAL_START,''WW'') = ''01'' then USG_BILLED_QUANTITY else null end) W01,',
 '    sum(case when to_char(USAGE_INTERVAL_START,''WW'') = ''02'' then USG_BILLED_QUANTITY else null end) W02,',
 '    sum(case when to_char(USAGE_INTERVAL_START,''WW'') = ''03'' then USG_BILLED_QUANTITY else null end) W03,',
@@ -19130,7 +19130,7 @@ wwv_flow_api.create_report_region(
 '    (:P5_TAG_DATA is null or tags_data like ''%#'' || nvl(:P5_TAG_KEY,''%'') || ''=%'' || :P5_TAG_DATA || ''#'') and',
 '    :P5_REPORT_SELECTOR = ''Weekly Product Unit Report''',
 'GROUP BY ',
-'    COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'')',
+'    COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'')',
 'having sum(USG_BILLED_QUANTITY)>0;'))
 ,p_ajax_enabled=>'Y'
 ,p_query_row_template=>wwv_flow_api.id(9790776953688052)
@@ -19180,7 +19180,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15083882458497513)
 ,p_query_column_id=>1
 ,p_column_alias=>'PRODUCT_NAME'
-,p_column_display_sequence=>2
+,p_column_display_sequence=>1
 ,p_column_heading=>'&P5_REPORT_GROUP.'
 ,p_use_as_row_header=>'N'
 ,p_column_html_expression=>'<span style="white-space:nowrap;">#PRODUCT_NAME#</span>'
@@ -19192,7 +19192,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084020372497515)
 ,p_query_column_id=>2
 ,p_column_alias=>'W01'
-,p_column_display_sequence=>3
+,p_column_display_sequence=>2
 ,p_column_heading=>'W01'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19206,7 +19206,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084196664497516)
 ,p_query_column_id=>3
 ,p_column_alias=>'W02'
-,p_column_display_sequence=>4
+,p_column_display_sequence=>3
 ,p_column_heading=>'W02'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19220,7 +19220,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084234533497517)
 ,p_query_column_id=>4
 ,p_column_alias=>'W03'
-,p_column_display_sequence=>5
+,p_column_display_sequence=>4
 ,p_column_heading=>'W03'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19234,7 +19234,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084309261497518)
 ,p_query_column_id=>5
 ,p_column_alias=>'W04'
-,p_column_display_sequence=>6
+,p_column_display_sequence=>5
 ,p_column_heading=>'W04'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19248,7 +19248,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084429391497519)
 ,p_query_column_id=>6
 ,p_column_alias=>'W05'
-,p_column_display_sequence=>7
+,p_column_display_sequence=>6
 ,p_column_heading=>'W05'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19262,7 +19262,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084526180497520)
 ,p_query_column_id=>7
 ,p_column_alias=>'W06'
-,p_column_display_sequence=>8
+,p_column_display_sequence=>7
 ,p_column_heading=>'W06'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19276,7 +19276,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084637150497521)
 ,p_query_column_id=>8
 ,p_column_alias=>'W07'
-,p_column_display_sequence=>9
+,p_column_display_sequence=>8
 ,p_column_heading=>'W07'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19290,7 +19290,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084797622497522)
 ,p_query_column_id=>9
 ,p_column_alias=>'W08'
-,p_column_display_sequence=>10
+,p_column_display_sequence=>9
 ,p_column_heading=>'W08'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19304,7 +19304,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084836140497523)
 ,p_query_column_id=>10
 ,p_column_alias=>'W09'
-,p_column_display_sequence=>11
+,p_column_display_sequence=>10
 ,p_column_heading=>'W09'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19318,7 +19318,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15084995246497524)
 ,p_query_column_id=>11
 ,p_column_alias=>'W10'
-,p_column_display_sequence=>12
+,p_column_display_sequence=>11
 ,p_column_heading=>'W10'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19332,7 +19332,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085033317497525)
 ,p_query_column_id=>12
 ,p_column_alias=>'W11'
-,p_column_display_sequence=>13
+,p_column_display_sequence=>12
 ,p_column_heading=>'W11'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19346,7 +19346,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085177774497526)
 ,p_query_column_id=>13
 ,p_column_alias=>'W12'
-,p_column_display_sequence=>14
+,p_column_display_sequence=>13
 ,p_column_heading=>'W12'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19360,7 +19360,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085250160497527)
 ,p_query_column_id=>14
 ,p_column_alias=>'W13'
-,p_column_display_sequence=>15
+,p_column_display_sequence=>14
 ,p_column_heading=>'W13'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19374,7 +19374,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085385329497528)
 ,p_query_column_id=>15
 ,p_column_alias=>'W14'
-,p_column_display_sequence=>16
+,p_column_display_sequence=>15
 ,p_column_heading=>'W14'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19388,7 +19388,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085480365497529)
 ,p_query_column_id=>16
 ,p_column_alias=>'W15'
-,p_column_display_sequence=>17
+,p_column_display_sequence=>16
 ,p_column_heading=>'W15'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19402,7 +19402,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085576532497530)
 ,p_query_column_id=>17
 ,p_column_alias=>'W16'
-,p_column_display_sequence=>18
+,p_column_display_sequence=>17
 ,p_column_heading=>'W16'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19416,7 +19416,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085669628497531)
 ,p_query_column_id=>18
 ,p_column_alias=>'W17'
-,p_column_display_sequence=>19
+,p_column_display_sequence=>18
 ,p_column_heading=>'W17'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19430,7 +19430,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085797503497532)
 ,p_query_column_id=>19
 ,p_column_alias=>'W18'
-,p_column_display_sequence=>20
+,p_column_display_sequence=>19
 ,p_column_heading=>'W18'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19444,7 +19444,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085831898497533)
 ,p_query_column_id=>20
 ,p_column_alias=>'W19'
-,p_column_display_sequence=>21
+,p_column_display_sequence=>20
 ,p_column_heading=>'W19'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19458,7 +19458,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15085995417497534)
 ,p_query_column_id=>21
 ,p_column_alias=>'W20'
-,p_column_display_sequence=>22
+,p_column_display_sequence=>21
 ,p_column_heading=>'W20'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19472,7 +19472,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086033795497535)
 ,p_query_column_id=>22
 ,p_column_alias=>'W21'
-,p_column_display_sequence=>23
+,p_column_display_sequence=>22
 ,p_column_heading=>'W21'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19486,7 +19486,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086169388497536)
 ,p_query_column_id=>23
 ,p_column_alias=>'W22'
-,p_column_display_sequence=>24
+,p_column_display_sequence=>23
 ,p_column_heading=>'W22'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19500,7 +19500,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086256237497537)
 ,p_query_column_id=>24
 ,p_column_alias=>'W23'
-,p_column_display_sequence=>25
+,p_column_display_sequence=>24
 ,p_column_heading=>'W23'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19514,7 +19514,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086305029497538)
 ,p_query_column_id=>25
 ,p_column_alias=>'W24'
-,p_column_display_sequence=>26
+,p_column_display_sequence=>25
 ,p_column_heading=>'W24'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19528,7 +19528,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086424118497539)
 ,p_query_column_id=>26
 ,p_column_alias=>'W25'
-,p_column_display_sequence=>27
+,p_column_display_sequence=>26
 ,p_column_heading=>'W25'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19542,7 +19542,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086575044497540)
 ,p_query_column_id=>27
 ,p_column_alias=>'W26'
-,p_column_display_sequence=>28
+,p_column_display_sequence=>27
 ,p_column_heading=>'W26'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19556,7 +19556,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086644472497541)
 ,p_query_column_id=>28
 ,p_column_alias=>'W27'
-,p_column_display_sequence=>29
+,p_column_display_sequence=>28
 ,p_column_heading=>'W27'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19570,7 +19570,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086736459497542)
 ,p_query_column_id=>29
 ,p_column_alias=>'W28'
-,p_column_display_sequence=>30
+,p_column_display_sequence=>29
 ,p_column_heading=>'W28'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19584,7 +19584,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086866979497543)
 ,p_query_column_id=>30
 ,p_column_alias=>'W29'
-,p_column_display_sequence=>31
+,p_column_display_sequence=>30
 ,p_column_heading=>'W29'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19598,7 +19598,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15083737349497512)
 ,p_query_column_id=>31
 ,p_column_alias=>'W30'
-,p_column_display_sequence=>32
+,p_column_display_sequence=>31
 ,p_column_heading=>'W30'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19612,7 +19612,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15086972484497544)
 ,p_query_column_id=>32
 ,p_column_alias=>'W31'
-,p_column_display_sequence=>33
+,p_column_display_sequence=>32
 ,p_column_heading=>'W31'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19626,7 +19626,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15087043653497545)
 ,p_query_column_id=>33
 ,p_column_alias=>'W32'
-,p_column_display_sequence=>34
+,p_column_display_sequence=>33
 ,p_column_heading=>'W32'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19640,7 +19640,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15087140332497546)
 ,p_query_column_id=>34
 ,p_column_alias=>'W33'
-,p_column_display_sequence=>35
+,p_column_display_sequence=>34
 ,p_column_heading=>'W33'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19654,7 +19654,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15087212537497547)
 ,p_query_column_id=>35
 ,p_column_alias=>'W34'
-,p_column_display_sequence=>36
+,p_column_display_sequence=>35
 ,p_column_heading=>'W34'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19668,7 +19668,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15087301471497548)
 ,p_query_column_id=>36
 ,p_column_alias=>'W35'
-,p_column_display_sequence=>37
+,p_column_display_sequence=>36
 ,p_column_heading=>'W35'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19682,7 +19682,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15087435183497549)
 ,p_query_column_id=>37
 ,p_column_alias=>'W36'
-,p_column_display_sequence=>38
+,p_column_display_sequence=>37
 ,p_column_heading=>'W36'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19696,7 +19696,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15087578148497550)
 ,p_query_column_id=>38
 ,p_column_alias=>'W37'
-,p_column_display_sequence=>39
+,p_column_display_sequence=>38
 ,p_column_heading=>'W37'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19710,7 +19710,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15101314487532001)
 ,p_query_column_id=>39
 ,p_column_alias=>'W38'
-,p_column_display_sequence=>40
+,p_column_display_sequence=>39
 ,p_column_heading=>'W38'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19724,7 +19724,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15101467741532002)
 ,p_query_column_id=>40
 ,p_column_alias=>'W39'
-,p_column_display_sequence=>41
+,p_column_display_sequence=>40
 ,p_column_heading=>'W39'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19738,7 +19738,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15101501587532003)
 ,p_query_column_id=>41
 ,p_column_alias=>'W40'
-,p_column_display_sequence=>42
+,p_column_display_sequence=>41
 ,p_column_heading=>'W40'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19752,7 +19752,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15101628599532004)
 ,p_query_column_id=>42
 ,p_column_alias=>'W41'
-,p_column_display_sequence=>43
+,p_column_display_sequence=>42
 ,p_column_heading=>'W41'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19766,7 +19766,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15101775120532005)
 ,p_query_column_id=>43
 ,p_column_alias=>'W42'
-,p_column_display_sequence=>44
+,p_column_display_sequence=>43
 ,p_column_heading=>'W42'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19780,7 +19780,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15101834422532006)
 ,p_query_column_id=>44
 ,p_column_alias=>'W43'
-,p_column_display_sequence=>45
+,p_column_display_sequence=>44
 ,p_column_heading=>'W43'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19794,7 +19794,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15101918299532007)
 ,p_query_column_id=>45
 ,p_column_alias=>'W44'
-,p_column_display_sequence=>46
+,p_column_display_sequence=>45
 ,p_column_heading=>'W44'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19808,7 +19808,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15102016850532008)
 ,p_query_column_id=>46
 ,p_column_alias=>'W45'
-,p_column_display_sequence=>47
+,p_column_display_sequence=>46
 ,p_column_heading=>'W45'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19822,7 +19822,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15102102479532009)
 ,p_query_column_id=>47
 ,p_column_alias=>'W46'
-,p_column_display_sequence=>48
+,p_column_display_sequence=>47
 ,p_column_heading=>'W46'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19836,7 +19836,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15102201934532010)
 ,p_query_column_id=>48
 ,p_column_alias=>'W47'
-,p_column_display_sequence=>49
+,p_column_display_sequence=>48
 ,p_column_heading=>'W47'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19850,7 +19850,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15102376964532011)
 ,p_query_column_id=>49
 ,p_column_alias=>'W48'
-,p_column_display_sequence=>50
+,p_column_display_sequence=>49
 ,p_column_heading=>'W48'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19864,7 +19864,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15102424245532012)
 ,p_query_column_id=>50
 ,p_column_alias=>'W49'
-,p_column_display_sequence=>51
+,p_column_display_sequence=>50
 ,p_column_heading=>'W49'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19878,7 +19878,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15102519216532013)
 ,p_query_column_id=>51
 ,p_column_alias=>'W50'
-,p_column_display_sequence=>52
+,p_column_display_sequence=>51
 ,p_column_heading=>'W50'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19892,7 +19892,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15102602847532014)
 ,p_query_column_id=>52
 ,p_column_alias=>'W51'
-,p_column_display_sequence=>53
+,p_column_display_sequence=>52
 ,p_column_heading=>'W51'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19906,7 +19906,7 @@ wwv_flow_api.create_report_columns(
  p_id=>wwv_flow_api.id(15102752424532015)
 ,p_query_column_id=>53
 ,p_column_alias=>'W52'
-,p_column_display_sequence=>54
+,p_column_display_sequence=>53
 ,p_column_heading=>'W52'
 ,p_use_as_row_header=>'N'
 ,p_column_format=>'999G999G999G999G990D00'
@@ -19929,7 +19929,7 @@ wwv_flow_api.create_report_region(
 ,p_query_type=>'SQL'
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT ',
-'	COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'') as product_name,',
+'	COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'') as product_name,',
 '    sum(case when to_char(USAGE_INTERVAL_START,''MM'') = ''01'' then USG_BILLED_QUANTITY else null end) Jan,',
 '    sum(case when to_char(USAGE_INTERVAL_START,''MM'') = ''02'' then USG_BILLED_QUANTITY else null end) Feb,',
 '    sum(case when to_char(USAGE_INTERVAL_START,''MM'') = ''03'' then USG_BILLED_QUANTITY else null end) Mar,',
@@ -19957,7 +19957,7 @@ wwv_flow_api.create_report_region(
 '    (:P5_TAG_DATA is null or tags_data like ''%#'' || nvl(:P5_TAG_KEY,''%'') || ''=%'' || :P5_TAG_DATA || ''#'') and',
 '    :P5_REPORT_SELECTOR = ''Monthly Product Unit Report''',
 'GROUP BY ',
-'	COST_PRODUCT_SKU || '' '' || replace(prd_description,''Oracle Cloud Infrastructure'',''OCI'')',
+'	COST_PRODUCT_SKU || '' '' || replace(replace(PRD_DESCRIPTION,COST_PRODUCT_SKU||'' - '',''''),''Oracle Cloud Infrastructure'',''OCI'')',
 'having sum(USG_BILLED_QUANTITY)>0;',
 ''))
 ,p_ajax_enabled=>'Y'
