@@ -164,7 +164,7 @@ Oracle Application Express (APEX) will be used for reporting.
 ```
    sqlplus admin/password@adwcusg_low
    
-   # Choose your own password
+   # For creating user "USAGE" , please choose your own password and keep for item 11
    SQL> create user usage identified by PaSsw0rd2#_#;
    SQL> grant connect, resource, dwrole, unlimited tablespace to usage;
    SQL> exit
@@ -182,7 +182,7 @@ Oracle Application Express (APEX) will be used for reporting.
 ## 11. Execute the python script - usage2adw.py
 
 ```
-    # Please amend the password for the USAGE schema
+    # Please amend the user and the password, example below for user "USAGE"
     python3 usage2adw.py -ip -du USAGE -dp PaSsw0rd2#_# -dn adwcusg_low
 ```
 
