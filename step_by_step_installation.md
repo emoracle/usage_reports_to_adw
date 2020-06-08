@@ -162,7 +162,7 @@ Oracle Application Express (APEX) will be used for reporting.
 ## 9. Create Database User for the Usage repository
 
 ```
-   sqlplus admin/password@adwcusg_low
+   sqlplus admin/<PASSWORD>@adwcusg_low
    
    # For creating user "USAGE" , please choose your own password and keep for item 11
    SQL> create user usage identified by PaSsw0rd2#_#;
@@ -183,7 +183,7 @@ Oracle Application Express (APEX) will be used for reporting.
 
 ```
     # Please amend the user and the password, example below for user "USAGE"
-    python3 usage2adw.py -ip -du USAGE -dp PaSsw0rd2#_# -dn adwcusg_low
+    python3 usage2adw.py -ip -du USAGE -dp <PASSWORD> -dn adwcusg_low
 ```
 
 
@@ -327,9 +327,9 @@ Right Click and Download [usage.demo.apex.sql](https://raw.githubusercontent.com
     cd $HOME
     git clone https://github.com/oracle/oci-python-sdk
 
-    # Execute the python script in order to upgrade the metadata
+    # Execute the python script in order to upgrade the metadata, example below with user "USAGE"
     cd oci-python-sdk/examples/usage_reports_to_adw
-    python3 usage2adw.py -ip -du USAGE -dp PaSsw0rd2#_# -dn adwcusg_low
+    python3 usage2adw.py -ip -du USAGE -dp <PASSWORD> -dn adwcusg_low
     
     # Login to APEX workspace and choose "OCI Usage and Cost Report" Application
     On the right menu -> Delete this application
