@@ -165,7 +165,7 @@ Oracle Application Express (APEX) will be used for reporting.
    sqlplus admin/<PASSWORD>@adwcusg_low
    
    # For creating user "USAGE" , please choose your own password and keep for item 11
-   SQL> create user usage identified by PaSsw0rd2#_#;
+   SQL> create user usage identified by <PASSWORD>;
    SQL> grant connect, resource, dwrole, unlimited tablespace to usage;
    SQL> exit
 ```
