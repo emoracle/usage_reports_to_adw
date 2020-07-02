@@ -69,7 +69,7 @@ import cx_Oracle
 import requests
 
 
-version = "20.05.18"
+version = "20.07.02"
 usage_report_namespace = "bling"
 work_report_dir = os.curdir + "/work_report_dir"
 
@@ -209,6 +209,8 @@ def set_parser_arguments():
     parser.add_argument('-f', default="", dest='fileid', help='File Id to load')
     parser.add_argument('-d', default="", dest='filedate', help='Minimum File Date to load (i.e. yyyy-mm-dd)')
     parser.add_argument('-p', default="", dest='proxy', help='Set Proxy (i.e. www-proxy-server.com:80) ')
+    parser.add_argument('-su', action='store_true', default=False, dest='skip_usage', help='Skip Load Usage Files')
+    parser.add_argument('-sc', action='store_true', default=False, dest='skip_cost', help='Skip Load Cost Files')
     parser.add_argument('-ip', action='store_true', default=False, dest='instance_principals', help='Use Instance Principals for Authentication')
     parser.add_argument('-du', default="", dest='duser', help='ADB User')
     parser.add_argument('-dp', default="", dest='dpass', help='ADB Password')
@@ -1155,7 +1157,7 @@ def load_usage_file(connection, object_storage, object_file, max_file_id, cmd, t
                     if c['id'] == row['product/compartmentId']:
                         compartment_path = c['path']
 
-                # Handle Tags up to 4000 chars with # seperator
+                # Handle Tags up to 3500 chars with # seperator
                 tags_data = ""
                 for (key, value) in row.items():
                     if 'tags' in key and len(value) > 0:
@@ -1164,8 +1166,8 @@ def load_usage_file(connection, object_storage, object_file, max_file_id, cmd, t
                         keyadj = str(key).replace("tags/", "").replace("#", "").replace("=", "")
                         valueadj = str(value).replace("#", "").replace("=", "")
 
-                        # check if length < 4000 to avoid overflow database column
-                        if len(tags_data) + len(keyadj) + len(valueadj) + 2 < 4000:
+                        # check if length < 3500 to avoid overflow database column
+                        if len(tags_data) + len(keyadj) + len(valueadj) + 2 < 3500:
                             tags_data += ("#" if tags_data == "" else "") + keyadj + "=" + valueadj + "#"
 
                         # add tag key to tag_keys array
@@ -1373,22 +1375,24 @@ def main_process():
         #############################
         # Handle Report Usage
         #############################
-        print("\nHandling Usage Report...")
         usage_num = 0
-        objects = object_storage.list_objects(usage_report_namespace, str(tenancy.id), fields="timeCreated,size", limit=999, prefix="reports/usage-csv/", start="reports/usage-csv/" + max_usage_file_id).data
-        for object_file in objects.objects:
-            usage_num += load_usage_file(connection, object_storage, object_file, max_usage_file_id, cmd, tenancy, compartments)
-        print("\n   Total " + str(usage_num) + " Usage Files Loaded")
+        if not cmd.skip_usage:
+            print("\nHandling Usage Report...")
+            objects = object_storage.list_objects(usage_report_namespace, str(tenancy.id), fields="timeCreated,size", limit=999, prefix="reports/usage-csv/", start="reports/usage-csv/" + max_usage_file_id).data
+            for object_file in objects.objects:
+                usage_num += load_usage_file(connection, object_storage, object_file, max_usage_file_id, cmd, tenancy, compartments)
+            print("\n   Total " + str(usage_num) + " Usage Files Loaded")
 
         #############################
         # Handle Cost Usage
         #############################
-        print("\nHandling Cost Report...")
         cost_num = 0
-        objects = object_storage.list_objects(usage_report_namespace, str(tenancy.id), fields="timeCreated,size", limit=999, prefix="reports/cost-csv/", start="reports/cost-csv/" + max_cost_file_id).data
-        for object_file in objects.objects:
-            cost_num += load_cost_file(connection, object_storage, object_file, max_cost_file_id, cmd, tenancy, compartments)
-        print("\n   Total " + str(cost_num) + " Cost Files Loaded")
+        if not cmd.skip_cost:
+            print("\nHandling Cost Report...")
+            objects = object_storage.list_objects(usage_report_namespace, str(tenancy.id), fields="timeCreated,size", limit=999, prefix="reports/cost-csv/", start="reports/cost-csv/" + max_cost_file_id).data
+            for object_file in objects.objects:
+                cost_num += load_cost_file(connection, object_storage, object_file, max_cost_file_id, cmd, tenancy, compartments)
+            print("\n   Total " + str(cost_num) + " Cost Files Loaded")
 
         # Handle Index structure if not exist
         check_database_index_structure_usage(connection)

@@ -74,7 +74,7 @@ Oracle Application Express (APEX) will be used for reporting.
    --> OCPU = 1
    --> Storage = 1
    --> Auto Scale = No
-   --> Password = <PASSWORD> (Please choose your own password)
+   --> Password = We1lc2om3e#4 (Please choose your own password)
    --> Choose Network Access = Allow secure Access from Everywhere (you can use VCN as well which requires NSG)
    --> Choose License Type
 ```
@@ -162,10 +162,10 @@ Oracle Application Express (APEX) will be used for reporting.
 ## 9. Create Database User for the Usage repository
 
 ```
-   sqlplus admin/<PASSWORD>@adwcusg_low
+   sqlplus admin/password@adwcusg_low
    
-   # For creating user "USAGE" , please choose your own password and keep for item 11
-   SQL> create user usage identified by <PASSWORD>;
+   # Choose your own password
+   SQL> create user usage identified by PaSsw0rd2#_#;
    SQL> grant connect, resource, dwrole, unlimited tablespace to usage;
    SQL> exit
 ```
@@ -182,8 +182,8 @@ Oracle Application Express (APEX) will be used for reporting.
 ## 11. Execute the python script - usage2adw.py
 
 ```
-    # Please amend the user and the password, example below for user "USAGE"
-    python3 usage2adw.py -ip -du USAGE -dp <PASSWORD> -dn adwcusg_low
+    # Please amend the password for the USAGE schema
+    python3 usage2adw.py -ip -du USAGE -dp PaSsw0rd2#_# -dn adwcusg_low
 ```
 
 
@@ -327,9 +327,9 @@ Right Click and Download [usage.demo.apex.sql](https://raw.githubusercontent.com
     cd $HOME
     git clone https://github.com/oracle/oci-python-sdk
 
-    # Execute the python script in order to upgrade the metadata, example below with user "USAGE"
+    # Execute the python script in order to upgrade the metadata
     cd oci-python-sdk/examples/usage_reports_to_adw
-    python3 usage2adw.py -ip -du USAGE -dp <PASSWORD> -dn adwcusg_low
+    python3 usage2adw.py -ip -du USAGE -dp PaSsw0rd2#_# -dn adwcusg_low
     
     # Login to APEX workspace and choose "OCI Usage and Cost Report" Application
     On the right menu -> Delete this application

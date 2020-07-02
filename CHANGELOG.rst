@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <http://keepachangelog.com/>`_.
 
 =====================
+20.07.02 - 2020-07-02
+=====================
+* Added flags to skip usage or skip cost with -sc and -su
+
+=====================
 20.06.02 - 2020-06-02
 =====================
 * Added Hourly cost over time
