@@ -69,7 +69,7 @@ import cx_Oracle
 import requests
 
 
-version = "20.07.02"
+version = "20.07.14"
 usage_report_namespace = "bling"
 work_report_dir = os.curdir + "/work_report_dir"
 
@@ -854,7 +854,9 @@ def check_database_table_structure_price_list(connection, tenant_name):
 # Load Cost File
 ##########################################################################
 def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, tenancy, compartments):
-    num = 0
+    num_files = 0
+    num_rows = 0
+
     try:
         o = object_file
 
@@ -869,17 +871,17 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
         # if file already loaded, skip (check if < max_file_id
         if str(max_file_id) != "None":
             if file_id <= str(max_file_id):
-                return num
+                return num_files
 
         # if file id enabled, check
         if cmd.fileid:
             if file_id != cmd.fileid:
-                return num
+                return num_files
 
         # check file date
         if cmd.filedate:
             if file_time <= cmd.filedate:
-                return num
+                return num_files
 
         path_filename = work_report_dir + '/' + filename
         print("   Processing file " + o.name + " - " + str(o.size) + " bytes, " + file_time)
@@ -893,6 +895,54 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
         # Read file to variable
         with gzip.open(path_filename, 'rt') as file_in:
             csv_reader = csv.DictReader(file_in)
+
+            # Adjust the batch size to meet memory and performance requirements for cx_oracle
+            batch_size = 5000
+            array_size = 1000
+
+            sql = "INSERT INTO OCI_COST ("
+            sql += "TENANT_NAME,"
+            sql += "FILE_ID,"
+            sql += "USAGE_INTERVAL_START, "
+            sql += "USAGE_INTERVAL_END, "
+            sql += "PRD_SERVICE, "
+            # 6
+            sql += "PRD_COMPARTMENT_ID, "
+            sql += "PRD_COMPARTMENT_NAME, "
+            sql += "PRD_COMPARTMENT_PATH, "
+            sql += "PRD_REGION, "
+            sql += "PRD_AVAILABILITY_DOMAIN, "
+            # 11
+            sql += "USG_RESOURCE_ID, "
+            sql += "USG_BILLED_QUANTITY, "
+            sql += "USG_BILLED_QUANTITY_OVERAGE, "
+            sql += "COST_SUBSCRIPTION_ID, "
+            sql += "COST_PRODUCT_SKU, "
+            # 16
+            sql += "PRD_DESCRIPTION, "
+            sql += "COST_UNIT_PRICE, "
+            sql += "COST_UNIT_PRICE_OVERAGE, "
+            sql += "COST_MY_COST, "
+            sql += "COST_MY_COST_OVERAGE, "
+            # 21
+            sql += "COST_CURRENCY_CODE, "
+            sql += "COST_BILLING_UNIT, "
+            sql += "COST_OVERAGE_FLAG,"
+            sql += "IS_CORRECTION, "
+            sql += "TAGS_DATA "
+            sql += ") VALUES ("
+            sql += ":1, :2, to_date(:3,'YYYY-MM-DD HH24:MI'), to_date(:4,'YYYY-MM-DD HH24:MI'), :5,  "
+            sql += ":6, :7, :8, :9, :10, "
+            sql += ":11, to_number(:12), to_number(:13) ,:14, :15, "
+            sql += ":16, to_number(:17), to_number(:18), to_number(:19), to_number(:20), "
+            sql += ":21, :22, :23, :24, :25"
+            sql += ") "
+
+            # insert bulk to database
+            cursor = cx_Oracle.Cursor(connection)
+
+            # Predefine the memory areas to match the table definition
+            cursor.setinputsizes(None, array_size)
 
             data = []
             for row in csv_reader:
@@ -1021,54 +1071,22 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
                     tags_data
                 )
                 data.append(row_data)
+                num_rows += 1
 
-            # insert bulk to database
-            cursor = cx_Oracle.Cursor(connection)
-            sql = "INSERT INTO OCI_COST ("
-            sql += "TENANT_NAME,"
-            sql += "FILE_ID,"
-            sql += "USAGE_INTERVAL_START, "
-            sql += "USAGE_INTERVAL_END, "
-            sql += "PRD_SERVICE, "
-            # 6
-            sql += "PRD_COMPARTMENT_ID, "
-            sql += "PRD_COMPARTMENT_NAME, "
-            sql += "PRD_COMPARTMENT_PATH, "
-            sql += "PRD_REGION, "
-            sql += "PRD_AVAILABILITY_DOMAIN, "
-            # 11
-            sql += "USG_RESOURCE_ID, "
-            sql += "USG_BILLED_QUANTITY, "
-            sql += "USG_BILLED_QUANTITY_OVERAGE, "
-            sql += "COST_SUBSCRIPTION_ID, "
-            sql += "COST_PRODUCT_SKU, "
-            # 16
-            sql += "PRD_DESCRIPTION, "
-            sql += "COST_UNIT_PRICE, "
-            sql += "COST_UNIT_PRICE_OVERAGE, "
-            sql += "COST_MY_COST, "
-            sql += "COST_MY_COST_OVERAGE, "
-            # 21
-            sql += "COST_CURRENCY_CODE, "
-            sql += "COST_BILLING_UNIT, "
-            sql += "COST_OVERAGE_FLAG,"
-            sql += "IS_CORRECTION, "
-            sql += "TAGS_DATA "
-            sql += ") VALUES ("
-            sql += ":1, :2, to_date(:3,'YYYY-MM-DD HH24:MI'), to_date(:4,'YYYY-MM-DD HH24:MI'), :5,  "
-            sql += ":6, :7, :8, :9, :10, "
-            sql += ":11, to_number(:12), to_number(:13) ,:14, :15, "
-            sql += ":16, to_number(:17), to_number(:18), to_number(:19), to_number(:20), "
-            sql += ":21, :22, :23, :24, :25"
-            sql += ") "
+                # executemany every batch size
+                if len(data) % batch_size == 0:
+                    cursor.executemany(sql, data)
+                    data = []
 
-            cursor.prepare(sql)
-            cursor.executemany(None, data)
+            # if data exist final execute
+            if data:
+                cursor.executemany(sql, data)
+
             connection.commit()
             cursor.close()
-            print("   Completed  file " + o.name + " - " + str(len(data)) + " Rows Inserted")
+            print("   Completed  file " + o.name + " - " + str(num_rows) + " Rows Inserted")
 
-        num += 1
+        num_files += 1
 
         # remove file
         os.remove(path_filename)
@@ -1093,7 +1111,7 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
             cursor.close()
             print("   Total " + str(len(data)) + " Tags Merged.")
 
-        return num
+        return num_files
 
     except cx_Oracle.DatabaseError as e:
         print("\nload_cost_file() - Error manipulating database - " + str(e) + "\n")
@@ -1108,7 +1126,8 @@ def load_cost_file(connection, object_storage, object_file, max_file_id, cmd, te
 # Load Usage File
 ##########################################################################
 def load_usage_file(connection, object_storage, object_file, max_file_id, cmd, tenancy, compartments):
-    num = 0
+    num_files = 0
+    num_rows = 0
     try:
         o = object_file
 
@@ -1123,17 +1142,17 @@ def load_usage_file(connection, object_storage, object_file, max_file_id, cmd, t
         # if file already loaded, skip (check if < max_usage_file_id)
         if str(max_file_id) != "None":
             if file_id <= str(max_file_id):
-                return num
+                return num_files
 
         # if file id enabled, check
         if cmd.fileid:
             if file_id != cmd.file_id:
-                return num
+                return num_files
 
         # check file date
         if cmd.filedate:
             if file_time <= cmd.filedate:
-                return num
+                return num_files
 
         path_filename = work_report_dir + '/' + filename
         print("   Processing file " + o.name + " - " + str(o.size) + " bytes, " + file_time)
@@ -1147,6 +1166,26 @@ def load_usage_file(connection, object_storage, object_file, max_file_id, cmd, t
         # Read file to variable
         with gzip.open(path_filename, 'rt') as file_in:
             csv_reader = csv.DictReader(file_in)
+
+            # sql statement
+            sql = "INSERT INTO OCI_USAGE (TENANT_NAME , FILE_ID, USAGE_INTERVAL_START, USAGE_INTERVAL_END, PRD_SERVICE, PRD_RESOURCE, "
+            sql += "PRD_COMPARTMENT_ID, PRD_COMPARTMENT_NAME, PRD_COMPARTMENT_PATH, PRD_REGION, PRD_AVAILABILITY_DOMAIN, USG_RESOURCE_ID, "
+            sql += "USG_BILLED_QUANTITY, USG_CONSUMED_QUANTITY, USG_CONSUMED_UNITS, USG_CONSUMED_MEASURE, IS_CORRECTION, TAGS_DATA "
+            sql += ") VALUES ("
+            sql += ":1, :2, to_date(:3,'YYYY-MM-DD HH24:MI'), to_date(:4,'YYYY-MM-DD HH24:MI'), :5, :6, "
+            sql += ":7, :8, :9, :10, :11, :12, "
+            sql += "to_number(:13), to_number(:14), :15, :16, :17 ,:18 "
+            sql += ") "
+
+            # Adjust the batch size to meet memory and performance requirements
+            batch_size = 5000
+            array_size = 1000
+
+            # insert bulk to database
+            cursor = cx_Oracle.Cursor(connection)
+
+            # Predefine the memory areas to match the table definition
+            cursor.setinputsizes(None, array_size)
 
             data = []
             for row in csv_reader:
@@ -1212,25 +1251,23 @@ def load_usage_file(connection, object_storage, object_file, max_file_id, cmd, t
                     tags_data
                 )
                 data.append(row_data)
+                num_rows += 1
 
-            # insert bulk to database
-            cursor = cx_Oracle.Cursor(connection)
-            sql = "INSERT INTO OCI_USAGE (TENANT_NAME , FILE_ID, USAGE_INTERVAL_START, USAGE_INTERVAL_END, PRD_SERVICE, PRD_RESOURCE, "
-            sql += "PRD_COMPARTMENT_ID, PRD_COMPARTMENT_NAME, PRD_COMPARTMENT_PATH, PRD_REGION, PRD_AVAILABILITY_DOMAIN, USG_RESOURCE_ID, "
-            sql += "USG_BILLED_QUANTITY, USG_CONSUMED_QUANTITY, USG_CONSUMED_UNITS, USG_CONSUMED_MEASURE, IS_CORRECTION, TAGS_DATA "
-            sql += ") VALUES ("
-            sql += ":1, :2, to_date(:3,'YYYY-MM-DD HH24:MI'), to_date(:4,'YYYY-MM-DD HH24:MI'), :5, :6, "
-            sql += ":7, :8, :9, :10, :11, :12, "
-            sql += "to_number(:13), to_number(:14), :15, :16, :17 ,:18 "
-            sql += ") "
+                # insert every buffer size
+                if len(data) % batch_size == 0:
+                    cursor.executemany(sql, data)
+                    data = []
 
-            cursor.prepare(sql)
-            cursor.executemany(None, data)
+            # final insert
+            if data:
+                cursor.executemany(sql, data)
+
+            # commit
             connection.commit()
             cursor.close()
-            print("   Completed  file " + o.name + " - " + str(len(data)) + " Rows Inserted")
+            print("   Completed  file " + o.name + " - " + str(num_rows) + " Rows Inserted")
 
-        num += 1
+        num_files += 1
 
         # remove file
         os.remove(path_filename)
@@ -1255,7 +1292,7 @@ def load_usage_file(connection, object_storage, object_file, max_file_id, cmd, t
             cursor.close()
             print("   Total " + str(len(data)) + " Tags Merged.")
 
-        return num
+        return num_files
 
     except cx_Oracle.DatabaseError as e:
         print("\nload_usage_file() - Error manipulating database - " + str(e) + "\n")

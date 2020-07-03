@@ -5,9 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <http://keepachangelog.com/>`_.
 
 =====================
-20.07.02 - 2020-07-02
+20.07.14 - 2020-07-14
 =====================
 * Added flags to skip usage or skip cost with -sc and -su
+* Added buffer size and array size for database multi insert to avoid large transaction failing
 
 =====================
 20.06.02 - 2020-06-02
