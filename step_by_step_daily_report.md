@@ -49,11 +49,10 @@ smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd 
 smtp_sasl_security_options =
 
-# Update the Postfix main.cf file.
-# If the following line is present, either remove the line or turn it off:
+# Update the Postfix main.cf file - If the following line is present, either remove the line or turn it off:
 smtpd_use_tls = yes
 
-# Update relayhost to include your SMTP connection endpoint and port. take it from item #4
+# Update relayhost to include your SMTP connection endpoint and port. take it from item #3
 relayhost = smtp.us-ashburn-1.oraclecloud.com:587	
 ```
 
