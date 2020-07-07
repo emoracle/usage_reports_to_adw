@@ -75,6 +75,7 @@ sudo postmap hash:/etc/postfix/sasl_passwd
 
 ```
 # if postfix running - run start else reload
+systemctl enable postfix
 sudo postfix start
 sudo postfix reload
 ```
