@@ -1,33 +1,45 @@
 # 1. Create approved sender
+```
 OCI -> Menu -> Solutions and Platform -> Email Delivery -> Email Approved Sender
 --> Create approved sender
---> email address: your login user
+--> email address to be used (Usually your login user)
+```
 
 ![](img/report_01.png)
+
 ![](img/report_02.png)
 
 # 2. Create user smtp password
+```
 OCI -> Menu -> Identity -> Users
+
 Find the user that will send e-mail
 Bottom left -> SMTP Credentials 
+
 Generate SMTP Credentials
 --> Description = cost_usage_email_credentials
 --> Copy the username and password to notepad, they won't appear again
+```
+
 
 ![](img/report_03.png)
+
 ![](img/report_04.png)
 
 # 3. Find connection end point for current region
 
-Find your smtp endpoint from the documentation - https://docs.cloud.oracle.com/en-us/iaas/Content/Email/Tasks/configuresmtpconnection.htm
-For Ashburn - smtp.us-ashburn-1.oraclecloud.com
+Find your SMTP endpoint from the documentation - 
 
+https://docs.cloud.oracle.com/en-us/iaas/Content/Email/Tasks/configuresmtpconnection.htm
 
-# 4. Setup postfix e-mail - part #1 - /etc/postfix/main.cf
+Example For Ashburn - smtp.us-ashburn-1.oraclecloud.com
 
-Login to the unix machine
+# 4. Setup postfix e-mail - part #1 - main.cf
 
 Following the documentation - https://docs.cloud.oracle.com/en-us/iaas/Content/Email/Reference/postfix.htm
+
+```
+Login to the unix machine
 
 sudo vi /etc/postfix/main.cf
 
@@ -43,10 +55,11 @@ smtpd_use_tls = yes
 
 # Update relayhost to include your SMTP connection endpoint and port. take it from item #4
 relayhost = smtp.us-ashburn-1.oraclecloud.com:587	
+```
 
+# 5. Setup postfix e-mail - part #2 - sasl_passwd
 
-# 5. Setup postfix e-mail - part #2 - /etc/postfix/sasl_passwd
-
+```
 sudo vi /etc/postfix/sasl_passwd
 
 # Add your relay host and port by entering:
@@ -57,40 +70,55 @@ smtp.us-ashburn-1.oraclecloud.com:587 ocid1.user.oc1..aaaaaaa....@ocid1.tenancy.
 # run
 sudo chown root:root /etc/postfix/sasl_passwd && sudo chmod 600 /etc/postfix/sasl_passwd
 sudo postmap hash:/etc/postfix/sasl_passwd
+```
 
 # 6. Setup postfix e-mail - part #3 - Reload Postfix
 
+```
 # if postfix running - run start else reload
 sudo postfix start
 sudo postfix reload
+```
 
-# 7. Setup postfix e-mail - part #4 - Test
+# 7. Setup postfix e-mail - part #4 - Test Mail
 
-# test e-mail
+```
+# Test e-mail
 echo "This is a test message" | mail -s "Test" -r "adi.zohar@oracle.com" adi.zohar@oracle.com
+```
 
-# 8. Clone the OCI SDK Repo from Git Hub (to get the run_daily_report.sh script)
+# 8. Clone the OCI SDK Repo from Git Hub 
+
+```
+# Required if previous clone not includes run_daily_report.sh
 cd $HOME
 sudo yum install -y git
 git clone https://github.com/oracle/oci-python-sdk
-cd oci-python-sdk/examples/usage_reports_to_adw
+cd oci-python-sdk/examples/usage_reports_to_adw/shell_scripts
 chmod +x run_daily_report.sh
+```
 
-# 9. Update run_daily_report.sh for the database connection details and mail info
+# 9. Update script parameters
 
+```
+# update run_daily_report.sh for the database connection and mail info details
 export DATABASE_USER=usage
 export DATABASE_PASS=<password>
 export DATABASE_NAME=adwcusg_low
 
 export MAIL_FROM="Report.Host"
 export MAIL_TO="oci.user@oracle.com"
+```
 
 # 10 execute the script
 
+```
 ./run_daily_report.sh
+```
 
 # 11 add crontab to run daily at 7am
 
+```
 # add the line to the crontab using - crontab -e
 0 7 * * * timeout 6h /home/opc/oci-python-sdk/examples/usage_reports_to_adw/shell_scripts > /home/opc/oci-python-sdk/examples/usage_reports_to_adw/shell_scripts/run_daily_report_crontab_run.txt 2>&1
-
+```
