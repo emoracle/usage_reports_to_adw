@@ -8,6 +8,7 @@ The format is based on `Keep a Changelog <http://keepachangelog.com/>`_.
 20.07.14 - 2020-07-14
 =====================
 * Support for Cost column changed - OCI changed the column billingUnitReadable to skuUnitDescription
+* Added daily report script with step by step configuration - requires OCI Email setup
 
 =====================
 20.07.07 - 2020-07-07

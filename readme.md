@@ -44,6 +44,9 @@ More information can be found at https://docs.cloud.oracle.com/en-us/iaas/Conten
 ## Step by Step Installation Guide
 Please check step by step guide - [step_by_step_installation.md](step_by_step_installation.md)
 
+## Step by Step Daily Report
+Please check step by step daily report guide - [step_by_step_daily_report.md](step_by_step_daily_report.md)
+
 
 ## OCI SDK Modules Included:
 - oci.identity.IdentityClient            
