@@ -7,6 +7,11 @@ The format is based on `Keep a Changelog <http://keepachangelog.com/>`_.
 =====================
 20.07.14 - 2020-07-14
 =====================
+* Support for Cost column changed - OCI changed the column billingUnitReadable to skuUnitDescription
+
+=====================
+20.07.07 - 2020-07-07
+=====================
 * Added flags to skip usage or skip cost with -sc and -su
 * Added buffer size and array size for database multi insert to avoid large transaction failing
 
