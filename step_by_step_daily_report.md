@@ -110,13 +110,13 @@ export MAIL_FROM="Report.Host"
 export MAIL_TO="oci.user@oracle.com"
 ```
 
-# 10 execute the script
+# 10. Execute the script
 
 ```
 ./run_daily_report.sh
 ```
 
-# 11 add crontab to run daily at 7am
+# 11. Add crontab to run daily at 7am
 
 ```
 # add the line to the crontab using - crontab -e
