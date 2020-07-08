@@ -91,8 +91,8 @@ select
         '<td nowrap class='||day3_class||'> '||to_char(day3,'999,999')||'</td>'||
         '<td nowrap class='||day2_class||'> '||to_char(day2,'999,999')||'</td>'||
         '<td nowrap class='||day1_class||'> '||to_char(day1,'999,999')||'</td>'||
-        '<td nowrap class=dcr> '||to_char(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)*365,'999,999,999')||'</td>'||
         '<td nowrap class=dcr> '||to_char(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)*31,'999,999,999')||'</td>'||
+        '<td nowrap class=dcr> '||to_char(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)*365,'999,999,999')||'</td>'||
         '<td nowrap class=dcc> '||to_char(LAST_LOAD,'DD-MON-YYYY HH24:MI')||'</td>'||
         '<td nowrap class=dcc> '||agent||'</td> '||
     '</tr>' as line
