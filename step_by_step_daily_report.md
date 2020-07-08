@@ -106,7 +106,8 @@ export DATABASE_USER=usage
 export DATABASE_PASS=<password>
 export DATABASE_NAME=adwcusg_low
 
-export MAIL_FROM="Report.Host"
+export MAIL_FROM_NAME="Cost.Report"
+export MAIL_FROM_EMAIL="report@oracleemaildelivery.com"
 export MAIL_TO="oci.user@oracle.com"
 ```
 
