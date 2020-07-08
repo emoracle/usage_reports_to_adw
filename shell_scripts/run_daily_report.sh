@@ -7,7 +7,7 @@
 # Amend variables below and database connectivity
 #
 # Crontab set:
-# 0 0 * * * timeout 6h /home/opc/oci-python-sdk/examples/usage_reports_to_adw/shell_scripts > /home/opc/oci-python-sdk/examples/usage_reports_to_adw/shell_scripts/run_daily_report_crontab_run.txt 2>&1
+# 0 7 * * * timeout 6h /home/opc/oci-python-sdk/examples/usage_reports_to_adw/shell_scripts > /home/opc/oci-python-sdk/examples/usage_reports_to_adw/shell_scripts/run_daily_report_crontab_run.txt 2>&1
 #############################################################################################################################
 # Env Variables based on yum instant client
 export CLIENT_HOME=/usr/lib/oracle/19.6/client64
@@ -55,11 +55,14 @@ prompt        .tabheader {font-size:12pt; font-family:arial; font-weight:bold; c
 prompt    </style>
 
 prompt <table border=1 cellpadding=3 cellspacing=0 width=1024 >
-prompt     <tr><td colspan=11 class=tabheader>Cost Usage Report - $DATE_PRINT </td></tr>
+prompt     <tr><td colspan=14 class=tabheader>Cost Usage Report - $DATE_PRINT </td></tr>
 
 select
     '<tr>'||
         '<th width=150 nowrap class=th1>Tenant Name</th>'||
+        '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-10),'DD-MON-YYYY')||'</th>'||
+        '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-9),'DD-MON-YYYY')||'</th>'||
+        '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-8),'DD-MON-YYYY')||'</th>'||
         '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-7),'DD-MON-YYYY')||'</th>'||
         '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-6),'DD-MON-YYYY')||'</th>'||
         '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-5),'DD-MON-YYYY')||'</th>'||
@@ -77,6 +80,9 @@ union all
 select
     '<tr>'||
         '<td nowrap class=dc1> '||tenant_name||'</td> '||
+        '<td nowrap class='||day10_class||'> '||to_char(day10,'999,999')||'</td>'||
+        '<td nowrap class='||day9_class||'> '||to_char(day9,'999,999')||'</td>'||
+        '<td nowrap class='||day8_class||'> '||to_char(day8,'999,999')||'</td>'||
         '<td nowrap class='||day7_class||'> '||to_char(day7,'999,999')||'</td>'||
         '<td nowrap class='||day6_class||'> '||to_char(day6,'999,999')||'</td>'||
         '<td nowrap class='||day5_class||'> '||to_char(day5,'999,999')||'</td>'||
@@ -84,38 +90,44 @@ select
         '<td nowrap class='||day3_class||'> '||to_char(day3,'999,999')||'</td>'||
         '<td nowrap class='||day2_class||'> '||to_char(day2,'999,999')||'</td>'||
         '<td nowrap class='||day1_class||'> '||to_char(day1,'999,999')||'</td>'||
-        '<td nowrap class=dcr> '||to_char(greatest(day1,day2,day3,day4,day5,day6,day7)*365,'999,999,999')||'</td>'||
+        '<td nowrap class=dcr> '||to_char(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)*365,'999,999,999')||'</td>'||
         '<td nowrap class=dcc> '||to_char(LAST_LOAD,'DD-MON-YYYY HH24:MI')||'</td>'||
         '<td nowrap class=dcc> '||agent||'</td> '||
     '</tr>' as line
 from
 (
     select
-        tenant_name,day1,day2,day3,day4,day5,day6,day7,last_load,agent,
-        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7)) = trunc(day1) then 'dcbold' else 'dcr' END as day1_class,
-        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7)) = trunc(day2) then 'dcbold' else 'dcr' END as day2_class,
-        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7)) = trunc(day3) then 'dcbold' else 'dcr' END as day3_class,
-        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7)) = trunc(day4) then 'dcbold' else 'dcr' END as day4_class,
-        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7)) = trunc(day5) then 'dcbold' else 'dcr' END as day5_class,
-        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7)) = trunc(day6) then 'dcbold' else 'dcr' END as day6_class,
-        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7)) = trunc(day7) then 'dcbold' else 'dcr' END as day7_class
+        tenant_name,day1,day2,day3,day4,day5,day6,day7,day8,day9,day10,last_load,agent,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day1) then 'dcbold' else 'dcr' END as day1_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day2) then 'dcbold' else 'dcr' END as day2_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day3) then 'dcbold' else 'dcr' END as day3_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day4) then 'dcbold' else 'dcr' END as day4_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day5) then 'dcbold' else 'dcr' END as day5_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day6) then 'dcbold' else 'dcr' END as day6_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day7) then 'dcbold' else 'dcr' END as day7_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day8) then 'dcbold' else 'dcr' END as day8_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day9) then 'dcbold' else 'dcr' END as day9_class,
+        case when trunc(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)) = trunc(day10) then 'dcbold' else 'dcr' END as day10_class
     from
     (
         select 
             tenant_name,
-            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-7) then COST_MY_COST else 0 end) DAY7,
-            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-6) then COST_MY_COST else 0 end) DAY6,
-            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-5) then COST_MY_COST else 0 end) DAY5,
-            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-4) then COST_MY_COST else 0 end) DAY4,
-            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-3) then COST_MY_COST else 0 end) DAY3,
-            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-2) then COST_MY_COST else 0 end) DAY2,
-            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-1) then COST_MY_COST else 0 end) DAY1,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-10) then COST_MY_COST else 0 end) DAY10,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-9 ) then COST_MY_COST else 0 end) DAY9,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-8 ) then COST_MY_COST else 0 end) DAY8,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-7 ) then COST_MY_COST else 0 end) DAY7,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-6 ) then COST_MY_COST else 0 end) DAY6,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-5 ) then COST_MY_COST else 0 end) DAY5,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-4 ) then COST_MY_COST else 0 end) DAY4,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-3 ) then COST_MY_COST else 0 end) DAY3,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-2 ) then COST_MY_COST else 0 end) DAY2,
+            sum(case when trunc(USAGE_INTERVAL_START) = trunc(sysdate-1 ) then COST_MY_COST else 0 end) DAY1,
             max(UPDATE_DATE) LAST_LOAD,
             max(agent_version) AGENT
         from oci_cost_stats
         where 
             tenant_name like '%' and
-            USAGE_INTERVAL_START > trunc(sysdate-8)
+            USAGE_INTERVAL_START >= trunc(sysdate-11)
         group by tenant_name
         order by 1
     )
