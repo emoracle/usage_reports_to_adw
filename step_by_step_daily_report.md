@@ -75,7 +75,7 @@ sudo postmap hash:/etc/postfix/sasl_passwd
 
 ```
 # if postfix running - run start else reload
-systemctl enable postfix
+sudo systemctl enable postfix
 sudo postfix start
 sudo postfix reload
 ```
@@ -84,7 +84,7 @@ sudo postfix reload
 
 ```
 # Test e-mail
-echo "This is a test message" | mail -s "Test" -r "adi.zohar@oracle.com" adi.zohar@oracle.com
+echo "This is a test message" | mail -s "Test" -r "sender.email@sender.com" youremail@yourdomain.com
 ```
 
 # 8. Clone the OCI SDK Repo from Git Hub 
