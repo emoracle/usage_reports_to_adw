@@ -55,7 +55,7 @@ prompt        .tabheader {font-size:12pt; font-family:arial; font-weight:bold; c
 prompt    </style>
 
 prompt <table border=1 cellpadding=3 cellspacing=0 width=1024 >
-prompt     <tr><td colspan=14 class=tabheader>Cost Usage Report - $DATE_PRINT </td></tr>
+prompt     <tr><td colspan=15 class=tabheader>Cost Usage Report - $DATE_PRINT </td></tr>
 
 select
     '<tr>'||
@@ -70,6 +70,7 @@ select
         '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-3),'DD-MON-YYYY')||'</th>'||
         '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-2),'DD-MON-YYYY')||'</th>'||
         '<th width=70  nowrap class=th1>'||to_char(trunc(sysdate-1),'DD-MON-YYYY')||'</th>'||
+        '<th width=70  nowrap class=th1>Month 31 Prediction</th>'||
         '<th width=70  nowrap class=th1>Year Prediction</th>'||
         '<th width=70  nowrap class=th1>Last Load</th>'||
         '<th width=70  nowrap class=th1>Agent Used</th>'||
@@ -91,6 +92,7 @@ select
         '<td nowrap class='||day2_class||'> '||to_char(day2,'999,999')||'</td>'||
         '<td nowrap class='||day1_class||'> '||to_char(day1,'999,999')||'</td>'||
         '<td nowrap class=dcr> '||to_char(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)*365,'999,999,999')||'</td>'||
+        '<td nowrap class=dcr> '||to_char(greatest(day1,day2,day3,day4,day5,day6,day7,day8,day9,day10)*31,'999,999,999')||'</td>'||
         '<td nowrap class=dcc> '||to_char(LAST_LOAD,'DD-MON-YYYY HH24:MI')||'</td>'||
         '<td nowrap class=dcc> '||agent||'</td> '||
     '</tr>' as line
