@@ -20,7 +20,8 @@ export APPDIR=$HOME/oci-python-sdk/examples/usage_reports_to_adw
 
 # Mail Info
 export DATE_PRINT="`date '+%d-%b-%Y'`"
-export MAIL_FROM="Report.Host"
+export MAIL_FROM_NAME="Cost.Report"
+export MAIL_FROM_EMAIL="report@oracleemaildelivery.com"
 export MAIL_TO="oci.user@oracle.com"
 export MAIL_SUBJECT="Cost Usage Report $DATE_PRINT"
 
@@ -234,7 +235,7 @@ echo "Sending e-mail to $MAIL_TO ..."
 ####################
 # Sending e-mail
 ####################
-cat <<-eomail | /usr/sbin/sendmail -f "$MAIL_TO" -F "$MAIL_FROM" -t
+cat <<-eomail | /usr/sbin/sendmail -f "$MAIL_FROM_EMAIL" -F "$MAIL_FROM_NAME" -t
 To: $MAIL_TO
 Subject: $MAIL_SUBJECT
 Content-Type: text/html
