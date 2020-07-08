@@ -29,6 +29,9 @@ Authentication to OCI by User or instance principals.
 ![](img/screen_2.png)
 ![](img/screen_3.png)
 
+## Daily E-Mail Report
+![](img/report_05.png)
+
 ## Usage Reports Overview
 A usage report is a comma-separated value (CSV) file that can be used to get a detailed breakdown of resources in Oracle Cloud Infrastructure for audit or invoice reconciliation.
 
