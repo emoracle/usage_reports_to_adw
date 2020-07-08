@@ -138,7 +138,7 @@ prompt </table>
 prompt <br><br>
 
 prompt <table border=1 cellpadding=3 cellspacing=0 width=1024 >
-prompt     <tr><td colspan=15 class=tabheader>Cost Usage Monthly Report - $DATE_PRINT </td></tr>
+prompt     <tr><td colspan=13 class=tabheader>Cost Usage Monthly Report - $DATE_PRINT </td></tr>
 
 select
     '<tr>'||
