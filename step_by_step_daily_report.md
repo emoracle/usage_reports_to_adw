@@ -2,7 +2,7 @@
 ```
 OCI -> Menu -> Solutions and Platform -> Email Delivery -> Email Approved Sender
 --> Create approved sender
---> email address to be used (Usually your login user)
+--> email address to be used, your domain must allow to send e-mail from it, if not use report@oracleemaildelivery.com, 
 ```
 
 ![](img/report_01.png)
@@ -84,7 +84,7 @@ sudo postfix reload
 
 ```
 # Test e-mail
-echo "This is a test message" | mail -s "Test" -r "sender.email@sender.com" youremail@yourdomain.com
+echo "This is a test message" | mail -s "Test" -r "report@oracleemaildelivery.com" youremail@yourdomain.com
 ```
 
 # 8. Clone the OCI SDK Repo from Git Hub 
