@@ -4,7 +4,7 @@
 usage2adw is a tool which uses the Python SDK to extract the usage and cost reports from your tenant and load it to Oracle Autonomous Database. (DbaaS can be used as well)
 Authentication to OCI by User or instance principals.
 
-It uses APEX for Visualization and generate Daily e-mail report.
+It uses APEX for Visualization and generates Daily e-mail report.
 
 **Developed by Adi Zohar, Feb 2020**
 
