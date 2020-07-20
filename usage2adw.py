@@ -570,14 +570,22 @@ def update_public_rates(connection, tenant_name):
 
                 rate_description = ""
                 rate_price = None
+                resp = None
 
-                # Call API to fetch the data
-                cost_product_sku = str(row[0])
-                country_code = str(row[1])
-                resp = requests.get(api_url + cost_product_sku, headers={'X-Oracle-Accept-CurrencyCode': country_code})
+                #######################################
+                # Call API to fetch the SKU Data
+                #######################################
+                try:
+                    cost_product_sku = str(row[0])
+                    country_code = str(row[1])
+                    resp = requests.get(api_url + cost_product_sku, headers={'X-Oracle-Accept-CurrencyCode': country_code})
+                    time.sleep(0.5)
 
-                # add sleep 0.5 to avoid too many request error
-                time.sleep(0.5)
+                except Exception as e:
+                    print("\nWarning  Calling REST API for Public Rate at update_public_rates() - " + str(e))
+                    time.sleep(2)
+                    continue
+
                 if not resp:
                     continue
 
@@ -620,7 +628,7 @@ def update_public_rates(connection, tenant_name):
         print("\nError connecting to billing metering API at update_public_rates() - " + str(e))
 
     except Exception as e:
-        print("\nError manipulating database at update_public_rates() - " + str(e))
+        raise Exception("\nError manipulating database at update_public_rates() - " + str(e))
 
 
 ##########################################################################
